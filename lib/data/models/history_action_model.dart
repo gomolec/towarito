@@ -4,6 +4,12 @@ import 'package:uuid/uuid.dart';
 
 import 'models.dart';
 
+enum HistoryActionType {
+  productCreated,
+  productUpdated,
+  productDeleted,
+}
+
 @HiveType(typeId: 3)
 class HistoryAction extends Equatable {
   @HiveField(0)
@@ -21,6 +27,16 @@ class HistoryAction extends Equatable {
     this.updatedProduct,
     this.isRedo = false,
   }) : id = id ?? const Uuid().v4();
+
+  HistoryActionType get historyActionType {
+    if (oldProduct != null && updatedProduct != null) {
+      return HistoryActionType.productUpdated;
+    }
+    if (oldProduct != null) {
+      return HistoryActionType.productDeleted;
+    }
+    return HistoryActionType.productCreated;
+  }
 
   HistoryAction copyWith({
     String? id,

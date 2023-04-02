@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
-  final String text;
+  final String? text;
 
   const Failure(
     this.text,

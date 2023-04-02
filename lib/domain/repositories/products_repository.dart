@@ -7,7 +7,7 @@ import '../entities/products_entity.dart';
 abstract class ProductsRepository {
   Stream<ProductsEntity> observeProductsData();
 
-  Future<Either<Failure, Product>> getProducts({required Product id});
+  Future<Either<Failure, Product>> getProduct({required Product id});
 
   Future<Either<Failure, Product>> createProduct({required Product product});
 

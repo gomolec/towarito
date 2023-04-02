@@ -9,5 +9,11 @@ abstract class HistoryRepository {
 
   Future<Either<Failure, None>> addAction({required HistoryAction action});
 
-  Future<Either<Failure, HistoryAction>> deleteAction({required String id});
+  Future<Either<Failure, HistoryAction>> undoAction();
+
+  Future<Either<Failure, HistoryAction>> redoAction();
+
+  Future<Either<Failure, None>> openSession({required String id});
+
+  Future<Either<Failure, None>> closeSession();
 }
