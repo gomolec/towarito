@@ -6,14 +6,14 @@ import '../../core/error/exceptions.dart';
 import '../../core/error/failures.dart';
 import '../../domain/entities/sessions_entity.dart';
 import '../../domain/repositories/repositories.dart';
-import '../datasources/local_sessions_datasource.dart';
+import '../datasources/sessions_local_datasource.dart';
 import '../models/session_model.dart';
 
 class SessionsRepositoryImpl implements SessionsRepository {
-  final LocalSessionsDatasource _source;
+  final SessionsLocalDatasource _source;
 
   SessionsRepositoryImpl({
-    required LocalSessionsDatasource source,
+    required SessionsLocalDatasource source,
   }) : _source = source {
     //_refreshSessionsStreamData();
   }
@@ -126,5 +126,9 @@ class SessionsRepositoryImpl implements SessionsRepository {
       currentSession: _source.getCurrentSession(),
     );
     _sessionsStreamController.add(data);
+  }
+
+  void dispose() {
+    _sessionsStreamController.close();
   }
 }

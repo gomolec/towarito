@@ -3,11 +3,13 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/models.dart';
 
 class ProductsEntity extends Equatable {
-  final List<Product> products;
+  final List<Product>? products;
 
   const ProductsEntity({
-    required this.products,
+    this.products,
   });
+
+  bool get isSessionOpened => products != null;
 
   ProductsEntity copyWith({
     List<Product>? products,
@@ -21,5 +23,5 @@ class ProductsEntity extends Equatable {
   String toString() => 'ProductsEntity(products: $products)';
 
   @override
-  List<Object> get props => [products];
+  List<Object?> get props => [products];
 }

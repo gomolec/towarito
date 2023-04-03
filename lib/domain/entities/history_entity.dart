@@ -3,15 +3,17 @@ import 'package:equatable/equatable.dart';
 import '../../data/models/models.dart';
 
 class HistoryEntity extends Equatable {
-  final List<HistoryAction> history;
+  final List<HistoryAction>? history;
   final bool canUndo;
   final bool canRedo;
 
   const HistoryEntity({
-    required this.history,
-    required this.canUndo,
-    required this.canRedo,
+    this.history,
+    this.canUndo = false,
+    this.canRedo = false,
   });
+
+  bool get isSessionOpened => history != null;
 
   HistoryEntity copyWith({
     List<HistoryAction>? history,
@@ -30,5 +32,5 @@ class HistoryEntity extends Equatable {
       'HistoryEntity(history: $history, canUndo: $canUndo, canRedo: $canRedo)';
 
   @override
-  List<Object> get props => [history, canUndo, canRedo];
+  List<Object?> get props => [history, canUndo, canRedo];
 }

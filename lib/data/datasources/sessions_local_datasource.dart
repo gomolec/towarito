@@ -4,7 +4,7 @@ import '../../core/constants/constants.dart';
 import '../../core/error/exceptions.dart';
 import '../models/models.dart';
 
-abstract class LocalSessionsDatasource {
+abstract class SessionsLocalDatasource {
   /// Returns a [List] of all sessions.
   List<Session> getSessions();
 
@@ -38,8 +38,8 @@ abstract class LocalSessionsDatasource {
   Future<void> deleteCurrentSessionId();
 }
 
-class LocalSessionsDatasourceImpl extends LocalSessionsDatasource {
-  LocalSessionsDatasourceImpl({
+class SessionsLocalDatasourceImpl extends SessionsLocalDatasource {
+  SessionsLocalDatasourceImpl({
     required Box<Session> sessionsSource,
     required Box<dynamic> currentSessionIdSource,
   })  : _sessionsSource = sessionsSource,

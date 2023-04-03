@@ -80,3 +80,49 @@ class UpdateSessionFailure extends Failure {
   @override
   String get errorMessage => "Wystąpił błąd podczas modyfikacji sesji. $text";
 }
+
+class OpenProductsSessionFailure extends Failure {
+  const OpenProductsSessionFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas otwierania sesji z produktami. $text";
+}
+
+class CloseProductsSessionFailure extends Failure {
+  const CloseProductsSessionFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas zamykania sesji z produktami. $text";
+}
+
+class CreateProductFailure extends Failure {
+  const CreateProductFailure(super.text);
+
+  @override
+  String get errorMessage => "Wystąpił błąd podczas tworzenia produktu. $text";
+}
+
+class DeleteProductFailure extends Failure {
+  const DeleteProductFailure(super.text);
+
+  @override
+  String get errorMessage => "Wystąpił błąd podczas usuwania produktu. $text";
+}
+
+class UpdateProductFailure extends Failure {
+  const UpdateProductFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas modyfikowania produktu. $text";
+}
+
+class GetProductFailure extends Failure {
+  const GetProductFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas pobierania sesji o wskazanym id. $text";
+}
