@@ -5,7 +5,7 @@ import '../../core/error/exceptions.dart';
 import '../models/models.dart';
 
 abstract class ProductsLocalDatasource {
-  /// Open product's session with give [Id]
+  /// Open product's session with given [Id]
   ///
   /// If such a session does not exist, it creates one.
   Future<void> openSession(String id);
@@ -55,9 +55,6 @@ class ProductsLocalDatasourceImpl implements ProductsLocalDatasource {
 
   @override
   Future<Product> deleteProduct(String id) async {
-    if (_productsSource == null) {
-      throw ProductsSessionNotOpenedException();
-    }
     final product = getSingleProduct(id);
 
     await _productsSource!.delete(product.id);

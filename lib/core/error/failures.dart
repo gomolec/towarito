@@ -126,3 +126,18 @@ class GetProductFailure extends Failure {
   String get errorMessage =>
       "Wystąpił błąd podczas pobierania sesji o wskazanym id. $text";
 }
+
+class HistoryUndoFailure extends Failure {
+  const HistoryUndoFailure(super.text);
+
+  @override
+  String get errorMessage => "Wystąpił błąd podczas cofania czynności. $text";
+}
+
+class HistoryRedoFailure extends Failure {
+  const HistoryRedoFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas ponawiania czynności. $text";
+}
