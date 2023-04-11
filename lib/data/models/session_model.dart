@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 
+part 'session_model.g.dart';
+
 @HiveType(typeId: 1)
 class Session extends Equatable {
   @HiveField(0)

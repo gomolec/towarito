@@ -4,9 +4,15 @@ import 'package:uuid/uuid.dart';
 
 import 'models.dart';
 
+part 'history_action_model.g.dart';
+
+@HiveType(typeId: 4)
 enum HistoryActionType {
+  @HiveField(0)
   productCreated,
+  @HiveField(1)
   productUpdated,
+  @HiveField(2)
   productDeleted,
 }
 
