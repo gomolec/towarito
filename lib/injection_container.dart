@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:towarito/core/navigation/router.dart';
 
 import 'core/constants/constants.dart';
 import 'data/datasources/history_local_datasource.dart';
@@ -16,6 +17,11 @@ import 'domain/repositories/repositories.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  //! Navigation
+  sl.registerLazySingleton<AppRouter>(
+    () => AppRouter(),
+  );
+
   //! Adapters
   sl.registerLazySingleton<ProductsAdapter>(
     () => ProductsAdapter(

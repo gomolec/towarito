@@ -33,6 +33,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  auto_route:
+    dependency: "direct main"
+    description:
+      name: auto_route
+      sha256: c012d5c631f9a201f07203a7084742618a1cef5e4d9f7b1e4fde6bc6158dd134
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
+  auto_route_generator:
+    dependency: "direct dev"
+    description:
+      name: auto_route_generator
+      sha256: "49d9c4eaa410d271c6d67044c579e695e8c5bbfd99de1e528c5ba1244e33809b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.0"
   bloc:
     dependency: transitive
     description:
@@ -189,10 +205,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "7a03456c3490394c8e7665890333e91ae8a49be43542b616e414449ac358acd4"
+      sha256: "6d691edde054969f0e0f26abb1b30834b5138b963793e56f69d3a9a4435e6352"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.4"
+    version: "2.3.0"
   dartz:
     dependency: "direct main"
     description:
@@ -499,6 +515,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: "49392a45ced973e8d94a85fdb21293fbb40ba805fc49f2965101ae748a3683b4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   platform:
     dependency: transitive
     description:
@@ -784,6 +808,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: "979ee37d622dec6365e2efa4d906c37470995871fe9ae080d967e192d88286b5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.2"
   yaml:
     dependency: transitive
     description:
