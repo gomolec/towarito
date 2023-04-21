@@ -36,19 +36,19 @@ class AppRouter extends $AppRouter {
           ],
         ),
         AutoRoute(
-          path: 'scanner',
+          path: '/scanner',
           page: ScannerRoute.page,
         ),
         AutoRoute(
-          path: 'sessions',
+          path: '/sessions',
           page: SessionsRoute.page,
         ),
         AutoRoute(
-          path: 'session/:id',
+          path: '/session/:id',
           page: SessionRoute.page,
         ),
         AutoRoute(
-          path: 'product/:id',
+          path: '/product/:id',
           page: ProductRoute.page,
         ),
       ];
