@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:towarito/core/navigation/router.dart';
 
 import 'core/constants/constants.dart';
+import 'core/navigation/router.dart';
 import 'data/datasources/history_local_datasource.dart';
 import 'data/datasources/products_local_datasource.dart';
 import 'data/datasources/sessions_local_datasource.dart';
