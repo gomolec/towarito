@@ -42,7 +42,7 @@ class HistoryRepositoryImpl implements HistoryRepository {
       _refreshHistoryStreamData();
       return const Right(None());
     } catch (e) {
-      return Left(CreateProductFailure('$e [id: $id]'));
+      return Left(CreateHistoryActionFailure('$e [id: ${action.id}]'));
     }
   }
 
@@ -53,7 +53,7 @@ class HistoryRepositoryImpl implements HistoryRepository {
       _refreshHistoryStreamData();
       return const Right(None());
     } catch (e) {
-      return Left(CloseProductsSessionFailure('$e [id: $id]'));
+      return Left(CloseHistorySessionFailure('$e'));
     }
   }
 
@@ -67,7 +67,7 @@ class HistoryRepositoryImpl implements HistoryRepository {
       _refreshHistoryStreamData();
       return const Right(None());
     } catch (e) {
-      return Left(OpenProductsSessionFailure('$e [id: $id]'));
+      return Left(OpenHistorySessionFailure('$e [id: $id]'));
     }
   }
 
@@ -104,21 +104,20 @@ class HistoryRepositoryImpl implements HistoryRepository {
   }
 
   void _refreshHistoryStreamData() {
-    late final HistoryEntity data;
     final history = _source.getHistory();
     if (history == null) {
-      data = const HistoryEntity();
+      _historyStreamController.add(const HistoryEntity());
+      return;
     }
-    if (history!.isEmpty) {
-      data = HistoryEntity(history: history);
+    if (history.isEmpty) {
+      _historyStreamController.add(HistoryEntity(history: history));
+      return;
     }
-    data = HistoryEntity(
+    _historyStreamController.add(HistoryEntity(
       history: history,
       canUndo: history.first.isRedo == false,
       canRedo: history.last.isRedo == true,
-    );
-
-    _historyStreamController.add(data);
+    ));
   }
 
   void dispose() {

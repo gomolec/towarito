@@ -81,7 +81,11 @@ class SessionsLocalDatasourceImpl extends SessionsLocalDatasource {
     final currentSessionId =
         _currentSessionIdSource.get(kCurrentSessionIdBoxName);
 
-    if (currentSessionId! is String) {
+    if (currentSessionId == null) {
+      return null;
+    }
+
+    if (currentSessionId is! String) {
       _currentSessionIdSource.delete(kCurrentSessionIdBoxName);
       return null;
     }

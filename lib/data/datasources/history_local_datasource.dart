@@ -50,6 +50,7 @@ class HistoryLocalDatasourceImpl implements HistoryLocalDatasource {
   Future<void> closeSession() async {
     if (_historySource != null) {
       _historySource!.close();
+      _historySource = null;
     }
   }
 

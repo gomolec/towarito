@@ -45,6 +45,8 @@ dependencies:
   flutter_bloc: ^8.1.2
   auto_route: ^6.1.0
   dynamic_color: ^1.6.3
+  bloc: ^8.1.1
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

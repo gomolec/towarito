@@ -13,6 +13,13 @@ abstract class Failure extends Equatable {
   List<Object> get props => [errorMessage];
 }
 
+class UnnamedFailure extends Failure {
+  const UnnamedFailure(super.text);
+
+  @override
+  String get errorMessage => "Wystąpił błąd. $text";
+}
+
 class CreateSessionFailure extends Failure {
   const CreateSessionFailure(super.text);
 
@@ -140,4 +147,28 @@ class HistoryRedoFailure extends Failure {
   @override
   String get errorMessage =>
       "Wystąpił błąd podczas ponawiania czynności. $text";
+}
+
+class OpenHistorySessionFailure extends Failure {
+  const OpenHistorySessionFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas otwierania sesji z historią. $text";
+}
+
+class CloseHistorySessionFailure extends Failure {
+  const CloseHistorySessionFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas zamykania sesji z historią. $text";
+}
+
+class CreateHistoryActionFailure extends Failure {
+  const CreateHistoryActionFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas tworzenia nowej akcji historii. $text";
 }

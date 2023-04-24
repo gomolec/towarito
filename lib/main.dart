@@ -7,8 +7,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'core/app/app.dart';
 import 'core/app/app_bloc_observer.dart';
+import 'data/datasources/sessions_local_datasource.dart';
 import 'data/models/models.dart';
 import 'injection_container.dart' as di;
+import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,7 @@ void main() async {
   Hive.registerAdapter(HistoryActionAdapter());
 
   await di.init();
+  await sl.getAsync<SessionsLocalDatasource>();
   Bloc.observer = AppBlocObserver();
 
   FlutterError.onError = (details) {

@@ -18,6 +18,9 @@ class SessionsAdapter {
         _productsRepository = productsRepository,
         _historyRepository = historyRepository;
 
+  Stream<SessionsEntity> observeSessionsData() =>
+      _sessionsRepository.observeSessionsData();
+
   Future<Either<Failure, Session>> createSession({required Session session}) =>
       _sessionsRepository.createSession(session: session);
 
@@ -39,9 +42,6 @@ class SessionsAdapter {
 
   Future<Either<Failure, Session>> getSession({required String id}) =>
       _sessionsRepository.getSession(id: id);
-
-  Stream<SessionsEntity> observeSessionsData() =>
-      _sessionsRepository.observeSessionsData();
 
   Future<Either<Failure, None>> startCurrentSession(
       {required String id}) async {

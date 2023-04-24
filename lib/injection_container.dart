@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:towarito/core/app/app_scaffold_messager.dart';
 
 import 'core/constants/constants.dart';
 import 'core/navigation/router.dart';
@@ -17,6 +18,11 @@ import 'domain/repositories/repositories.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  //! App
+  sl.registerLazySingleton<AppScaffoldMessager>(
+    () => AppScaffoldMessager(),
+  );
+
   //! Navigation
   sl.registerLazySingleton<AppRouter>(
     () => AppRouter(),
@@ -62,7 +68,7 @@ Future<void> init() async {
   sl.registerLazySingletonAsync<SessionsLocalDatasource>(() async {
     return SessionsLocalDatasourceImpl(
       sessionsSource: await Hive.openBox(kSessionsBoxName),
-      currentSessionIdSource: sl(),
+      currentSessionIdSource: await Hive.openBox(kCurrentSessionIdBoxName),
     );
   });
 

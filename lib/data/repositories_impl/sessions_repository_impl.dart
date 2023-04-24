@@ -15,7 +15,7 @@ class SessionsRepositoryImpl implements SessionsRepository {
   SessionsRepositoryImpl({
     required SessionsLocalDatasource source,
   }) : _source = source {
-    //_refreshSessionsStreamData();
+    _refreshSessionsStreamData();
   }
 
   final _sessionsStreamController = BehaviorSubject<SessionsEntity>.seeded(
@@ -92,8 +92,10 @@ class SessionsRepositoryImpl implements SessionsRepository {
     try {
       final currentSession = _source.getCurrentSession();
       if (id == currentSession?.id) {
-        return Left(StartCurrentSessionFailure(
-            'Sesja o id: $id jest już aktualną sesją.'));
+        return Left(
+          StartCurrentSessionFailure(
+              'Sesja o id: $id jest już aktualną sesją.'),
+        );
       }
       final updatedSession =
           _source.getSingleSession(id).copyWith(finished: () => null);
@@ -121,9 +123,14 @@ class SessionsRepositoryImpl implements SessionsRepository {
   }
 
   void _refreshSessionsStreamData() {
+    final session = _source.getCurrentSession();
+    final sessions = List.of(_source.getSessions());
+    if (session != null) {
+      sessions.remove(session);
+    }
     final data = SessionsEntity(
-      sessions: List.of(_source.getSessions()),
-      currentSession: _source.getCurrentSession(),
+      sessions: sessions,
+      currentSession: session,
     );
     _sessionsStreamController.add(data);
   }

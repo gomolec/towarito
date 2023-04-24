@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../core/constants/constants.dart';
@@ -48,8 +50,11 @@ class ProductsLocalDatasourceImpl implements ProductsLocalDatasource {
 
   @override
   Future<void> closeSession() async {
+    log('zamykanie');
     if (_productsSource != null) {
+      log('zamykanie for rel');
       _productsSource!.close();
+      _productsSource = null;
     }
   }
 

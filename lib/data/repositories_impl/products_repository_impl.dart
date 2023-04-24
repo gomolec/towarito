@@ -40,7 +40,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
       _refreshProductsStreamData();
       return const Right(None());
     } catch (e) {
-      return Left(CloseProductsSessionFailure('$e [id: $id]'));
+      return Left(CloseProductsSessionFailure('$e'));
     }
   }
 
@@ -52,7 +52,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
       _refreshProductsStreamData();
       return Right(createdProduct);
     } catch (e) {
-      return Left(CreateProductFailure('$e [id: $id]'));
+      return Left(CreateProductFailure('$e [id: ${product.id}]'));
     }
   }
 
@@ -85,7 +85,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
       _refreshProductsStreamData();
       return Right(updatedProduct);
     } catch (e) {
-      return Left(UpdateProductFailure('$e [id: $id]'));
+      return Left(UpdateProductFailure('$e [id: ${product.id}]'));
     }
   }
 

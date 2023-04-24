@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:towarito/core/app/app_scaffold_messager.dart';
 
 import '../../injection_container.dart';
 import '../navigation/router.dart';
@@ -30,6 +31,8 @@ class App extends StatelessWidget {
         }
 
         return MaterialApp.router(
+          scaffoldMessengerKey:
+              sl<AppScaffoldMessager>().rootScaffoldMessengerKey,
           title: 'Towarito',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

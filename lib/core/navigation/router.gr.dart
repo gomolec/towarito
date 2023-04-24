@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i10;
+import 'package:flutter/material.dart' as _i11;
 import 'package:towarito/presentation/pages/dashboard/dashboard_page.dart'
     as _i1;
 import 'package:towarito/presentation/pages/history/history_page.dart' as _i2;
@@ -68,9 +69,16 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       );
     },
     SessionRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<SessionRouteArgs>(
+          orElse: () =>
+              SessionRouteArgs(sessionId: pathParams.optString('sessionId')));
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.SessionPage(),
+        child: _i8.SessionPage(
+          key: args.key,
+          sessionId: args.sessionId,
+        ),
       );
     },
     SessionsRoute.name: (routeData) {
@@ -182,16 +190,41 @@ class ScannerRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i8.SessionPage]
-class SessionRoute extends _i10.PageRouteInfo<void> {
-  const SessionRoute({List<_i10.PageRouteInfo>? children})
-      : super(
+class SessionRoute extends _i10.PageRouteInfo<SessionRouteArgs> {
+  SessionRoute({
+    _i11.Key? key,
+    String? sessionId,
+    List<_i10.PageRouteInfo>? children,
+  }) : super(
           SessionRoute.name,
+          args: SessionRouteArgs(
+            key: key,
+            sessionId: sessionId,
+          ),
+          rawPathParams: {'sessionId': sessionId},
           initialChildren: children,
         );
 
   static const String name = 'SessionRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i10.PageInfo<SessionRouteArgs> page =
+      _i10.PageInfo<SessionRouteArgs>(name);
+}
+
+class SessionRouteArgs {
+  const SessionRouteArgs({
+    this.key,
+    this.sessionId,
+  });
+
+  final _i11.Key? key;
+
+  final String? sessionId;
+
+  @override
+  String toString() {
+    return 'SessionRouteArgs{key: $key, sessionId: $sessionId}';
+  }
 }
 
 /// generated route for
