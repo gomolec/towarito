@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:towarito/core/app/app_scaffold_messager.dart';
+import 'package:towarito/core/utilities/products_querier.dart';
+import 'package:towarito/core/utilities/products_sorter.dart';
 
 import 'core/constants/constants.dart';
 import 'core/navigation/router.dart';
@@ -18,6 +20,14 @@ import 'domain/repositories/repositories.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  //! Utilities
+  sl.registerLazySingleton<ProductsQuerier>(
+    () => const ProductsQuerier(),
+  );
+  sl.registerLazySingleton<ProductsSorter>(
+    () => const ProductsSorter(),
+  );
+
   //! App
   sl.registerLazySingleton<AppScaffoldMessager>(
     () => AppScaffoldMessager(),
@@ -31,44 +41,45 @@ Future<void> init() async {
   //! Adapters
   sl.registerLazySingleton<ProductsAdapter>(
     () => ProductsAdapter(
-      productsRepository: sl(),
-      historyRepository: sl(),
+      productsRepository: sl<ProductsRepository>(),
+      historyRepository: sl<HistoryRepository>(),
     ),
   );
 
   sl.registerLazySingleton<HistoryAdapter>(
     () => HistoryAdapter(
-      productsRepository: sl(),
-      historyRepository: sl(),
+      productsRepository: sl<ProductsRepository>(),
+      historyRepository: sl<HistoryRepository>(),
     ),
   );
 
   sl.registerLazySingleton<SessionsAdapter>(
     () => SessionsAdapter(
-      sessionsRepository: sl(),
-      productsRepository: sl(),
-      historyRepository: sl(),
+      sessionsRepository: sl<SessionsRepository>(),
+      productsRepository: sl<ProductsRepository>(),
+      historyRepository: sl<HistoryRepository>(),
     ),
   );
 
   //! Respositories
   sl.registerLazySingleton<ProductsRepository>(
-    () => ProductsRepositoryImpl(source: sl()),
+    () => ProductsRepositoryImpl(source: sl<ProductsLocalDatasource>()),
   );
 
   sl.registerLazySingleton<HistoryRepository>(
-    () => HistoryRepositoryImpl(source: sl()),
+    () => HistoryRepositoryImpl(source: sl<HistoryLocalDatasource>()),
   );
 
   sl.registerLazySingleton<SessionsRepository>(
-    () => SessionsRepositoryImpl(source: sl()),
+    () => SessionsRepositoryImpl(source: sl<SessionsLocalDatasource>()),
   );
 
   //! Data sources
   sl.registerLazySingletonAsync<SessionsLocalDatasource>(() async {
     return SessionsLocalDatasourceImpl(
       sessionsSource: await Hive.openBox(kSessionsBoxName),
-      currentSessionIdSource: await Hive.openBox(kCurrentSessionIdBoxName),
+      currentSessionIdSource: await Hive.openBox(kCurrentSessionIdBoxName)
+        ..clear(),
     );
   });
 

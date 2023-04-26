@@ -52,7 +52,7 @@ class Session extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       created: created ?? this.created,
-      updated: updated,
+      updated: updated ?? this.updated,
       finished: finished != null ? finished() : this.finished,
       author: author ?? this.author,
       note: note ?? this.note,

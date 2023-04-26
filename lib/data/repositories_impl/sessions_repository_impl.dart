@@ -114,7 +114,9 @@ class SessionsRepositoryImpl implements SessionsRepository {
   Future<Either<Failure, None>> updateSession(
       {required Session session}) async {
     try {
-      _source.saveSession(session);
+      _source.saveSession(
+        session.copyWith(updated: DateTime.now()),
+      );
       _refreshSessionsStreamData();
       return const Right(None());
     } catch (e) {

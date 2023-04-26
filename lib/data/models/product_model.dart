@@ -77,7 +77,7 @@ class Product extends Equatable {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, code: $code, quantity: $quantity, targetQuantity: $targetQuantity, created: $created, updated: $updated, note: $note, bookmarked: $bookmarked, imageUrl: $imageUrl, url: $url)';
+    return 'Product(id: $id, name: $name, code: $code, quantity: $quantity, targetQuantity: $targetQuantity, created: $created, updated: $updated, note_len: ${note.length}, bookmarked: $bookmarked, imageUrl: $imageUrl, url: $url)';
   }
 
   @override

@@ -51,9 +51,16 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       );
     },
     ProductRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ProductRouteArgs>(
+          orElse: () => ProductRouteArgs(
+              initialProductId: pathParams.optString('initialProductId')));
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.ProductPage(),
+        child: _i5.ProductPage(
+          key: args.key,
+          initialProductId: args.initialProductId,
+        ),
       );
     },
     ProductsRoute.name: (routeData) {
@@ -148,16 +155,41 @@ class MenuRoute extends _i10.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ProductPage]
-class ProductRoute extends _i10.PageRouteInfo<void> {
-  const ProductRoute({List<_i10.PageRouteInfo>? children})
-      : super(
+class ProductRoute extends _i10.PageRouteInfo<ProductRouteArgs> {
+  ProductRoute({
+    _i11.Key? key,
+    String? initialProductId,
+    List<_i10.PageRouteInfo>? children,
+  }) : super(
           ProductRoute.name,
+          args: ProductRouteArgs(
+            key: key,
+            initialProductId: initialProductId,
+          ),
+          rawPathParams: {'initialProductId': initialProductId},
           initialChildren: children,
         );
 
   static const String name = 'ProductRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i10.PageInfo<ProductRouteArgs> page =
+      _i10.PageInfo<ProductRouteArgs>(name);
+}
+
+class ProductRouteArgs {
+  const ProductRouteArgs({
+    this.key,
+    this.initialProductId,
+  });
+
+  final _i11.Key? key;
+
+  final String? initialProductId;
+
+  @override
+  String toString() {
+    return 'ProductRouteArgs{key: $key, initialProductId: $initialProductId}';
+  }
 }
 
 /// generated route for
