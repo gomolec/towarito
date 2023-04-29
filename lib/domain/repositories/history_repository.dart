@@ -7,7 +7,10 @@ import '../entities/history_entity.dart';
 abstract class HistoryRepository {
   Stream<HistoryEntity> observeHistoryData();
 
-  Future<Either<Failure, None>> addAction({required HistoryAction action});
+  Future<Either<Failure, None>> addAction({
+    Product? oldProduct,
+    Product? updatedProduct,
+  });
 
   Future<Either<Failure, HistoryAction>> undoAction();
 

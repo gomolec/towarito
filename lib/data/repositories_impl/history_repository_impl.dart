@@ -6,7 +6,7 @@ import '../../core/error/failures.dart';
 import '../../domain/entities/history_entity.dart';
 import '../../domain/repositories/history_repository.dart';
 import '../datasources/history_local_datasource.dart';
-import '../models/history_action_model.dart';
+import '../models/models.dart';
 
 class HistoryRepositoryImpl implements HistoryRepository {
   final HistoryLocalDatasource _source;
@@ -20,29 +20,39 @@ class HistoryRepositoryImpl implements HistoryRepository {
   );
 
   @override
-  Future<Either<Failure, None>> addAction(
-      {required HistoryAction action}) async {
+  Future<Either<Failure, None>> addAction({
+    Product? oldProduct,
+    Product? updatedProduct,
+  }) async {
     try {
       final history = _source.getHistory();
-      if (history == null) {
-        await _source.saveAction(action);
+      if (history == null || history.isEmpty) {
+        await _source.saveAction(HistoryAction(
+          id: 0,
+          oldProduct: oldProduct,
+          updatedProduct: updatedProduct,
+        ));
         _refreshHistoryStreamData();
         return const Right(None());
       }
-      final currentHistoryIndex = _currentHistoryAction(history) + 1;
+      final currentHistoryIndex = _currentHistoryActionIndex(history);
       if (history.length > currentHistoryIndex) {
-        for (var i = history.length - 1; i >= currentHistoryIndex; i--) {
+        for (var i = history.length - 1; i >= currentHistoryIndex + 1; i--) {
           await _source.deleteHistoryAction(history[i].id);
         }
       }
-      if (currentHistoryIndex >= kMaxStoredHistoryActions) {
+      if (currentHistoryIndex + 1 >= kMaxStoredHistoryActions) {
         await _source.deleteHistoryAction(history.first.id);
       }
-      await _source.saveAction(action);
+      await _source.saveAction(HistoryAction(
+        id: currentHistoryIndex + 1,
+        oldProduct: oldProduct,
+        updatedProduct: updatedProduct,
+      ));
       _refreshHistoryStreamData();
       return const Right(None());
     } catch (e) {
-      return Left(CreateHistoryActionFailure('$e [id: ${action.id}]'));
+      return Left(CreateHistoryActionFailure('$e'));
     }
   }
 
@@ -75,11 +85,12 @@ class HistoryRepositoryImpl implements HistoryRepository {
   Future<Either<Failure, HistoryAction>> redoAction() async {
     try {
       final history = _source.getHistory();
-      if (history == null || history.isEmpty || history.first.isRedo == false) {
+      if (history == null || history.isEmpty || history.last.isRedo == false) {
         return const Left(HistoryRedoFailure("Brak historii do ponawiania"));
       }
       final action = await _source.saveAction(
-          history[_currentHistoryAction(history) + 1].copyWith(isRedo: false));
+          history[_currentHistoryActionIndex(history) + 1]
+              .copyWith(isRedo: false));
       _refreshHistoryStreamData();
       return Right(action);
     } catch (e) {
@@ -95,7 +106,7 @@ class HistoryRepositoryImpl implements HistoryRepository {
         return const Left(HistoryUndoFailure("Brak historii do cofania"));
       }
       final action = await _source.saveAction(
-          history[_currentHistoryAction(history)].copyWith(isRedo: true));
+          history[_currentHistoryActionIndex(history)].copyWith(isRedo: true));
       _refreshHistoryStreamData();
       return Right(action);
     } catch (e) {
@@ -124,7 +135,7 @@ class HistoryRepositoryImpl implements HistoryRepository {
     _historyStreamController.close();
   }
 
-  int _currentHistoryAction(List<HistoryAction> history) {
+  int _currentHistoryActionIndex(List<HistoryAction> history) {
     return history.lastIndexWhere((e) => e.isRedo == false);
   }
 }

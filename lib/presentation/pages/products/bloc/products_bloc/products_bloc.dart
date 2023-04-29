@@ -67,6 +67,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           status: ProductsStatus.failure,
           failure: () => UnnamedFailure(error.toString()),
         ));
+        _appScaffoldMessager.showSnackbar(message: error.toString());
       },
     );
   }

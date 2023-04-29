@@ -19,6 +19,8 @@ void main() async {
   Hive.registerAdapter(SessionAdapter());
   Hive.registerAdapter(ProductAdapter());
   Hive.registerAdapter(HistoryActionAdapter());
+  Hive.registerAdapter(HistoryActionTypeAdapter());
+  Hive.registerAdapter(HistoryUpdateTypeAdapter());
 
   await di.init();
   await sl.getAsync<SessionsLocalDatasource>();

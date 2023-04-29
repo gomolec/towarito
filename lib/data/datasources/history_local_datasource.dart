@@ -27,14 +27,15 @@ abstract class HistoryLocalDatasource {
 
   /// Deletes and returns the [HistoryAction] with the given id.
   ///
-  /// If no product with the given id exists, nothing happens.
-  Future<HistoryAction> deleteHistoryAction(String id);
+  /// If no action with the given id exists, a [HistoryActionNotFoundException]
+  /// error is thrown.
+  Future<HistoryAction> deleteHistoryAction(int id);
 
   /// Returns a single [HistoryAction] with the given id.
   ///
-  /// If no product with the given id exists, a [HistoryActionNotFoundException] error is
-  /// thrown.
-  HistoryAction getSingleAction(String id);
+  /// If no action with the given id exists, a [HistoryActionNotFoundException]
+  /// error is thrown.
+  HistoryAction getSingleAction(int id);
 }
 
 class HistoryLocalDatasourceImpl implements HistoryLocalDatasource {
@@ -45,30 +46,36 @@ class HistoryLocalDatasourceImpl implements HistoryLocalDatasource {
   }) : _datasource = datasource;
 
   Box<HistoryAction>? _historySource;
+  List<HistoryAction>? _cachedHistory;
 
   @override
   Future<void> closeSession() async {
     if (_historySource != null) {
       _historySource!.close();
       _historySource = null;
+      _cachedHistory = null;
     }
   }
 
   @override
-  Future<HistoryAction> deleteHistoryAction(String id) async {
+  Future<HistoryAction> deleteHistoryAction(int id) async {
     final action = getSingleAction(id);
-
     await _historySource!.delete(action.id);
-
+    _cachedHistory = null;
     return action;
   }
 
   @override
   List<HistoryAction>? getHistory() {
-    if (_historySource != null) {
-      return _historySource!.values.toList();
+    if (_historySource == null) {
+      return null;
     }
-    return null;
+    _cachedHistory ??= _historySource!.values.toList();
+    if (_cachedHistory!.isNotEmpty) {
+      _cachedHistory!.sort((a, b) => a.id.compareTo(b.id));
+    }
+
+    return _cachedHistory;
   }
 
   @override
@@ -84,20 +91,20 @@ class HistoryLocalDatasourceImpl implements HistoryLocalDatasource {
       throw HistorySessionNotOpenedException();
     }
     _historySource!.put(action.id, action);
+    _cachedHistory = null;
     return action;
   }
 
   @override
-  HistoryAction getSingleAction(String id) {
+  HistoryAction getSingleAction(int index) {
     if (_historySource == null) {
       throw ProductsSessionNotOpenedException();
     }
-    final action = _historySource!.get(id);
+    final action = _historySource!.get(index);
 
     if (action == null) {
       throw HistoryActionNotFoundException();
     }
-
     return action;
   }
 }

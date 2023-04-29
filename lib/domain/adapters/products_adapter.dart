@@ -24,7 +24,7 @@ class ProductsAdapter {
       return productsResult;
     }
     final historyResult = await _historyRepository.addAction(
-      action: HistoryAction(updatedProduct: productsResult.asRight()),
+      updatedProduct: productsResult.asRight(),
     );
 
     if (historyResult.isLeft()) {
@@ -39,7 +39,7 @@ class ProductsAdapter {
       return productsResult;
     }
     final historyResult = await _historyRepository.addAction(
-      action: HistoryAction(oldProduct: productsResult.asRight()),
+      oldProduct: productsResult.asRight(),
     );
 
     if (historyResult.isLeft()) {
@@ -56,14 +56,19 @@ class ProductsAdapter {
 
   Future<Either<Failure, Product>> updateProduct(
       {required Product product}) async {
+    final oldProductResult =
+        await _productsRepository.getProduct(id: product.id);
+    if (oldProductResult.isLeft()) {
+      return oldProductResult;
+    }
     final productsResult =
         await _productsRepository.updateProduct(product: product);
     if (productsResult.isLeft()) {
       return productsResult;
     }
     final historyResult = await _historyRepository.addAction(
-      action: HistoryAction(
-          oldProduct: product, updatedProduct: productsResult.asRight()),
+      oldProduct: oldProductResult.asRight(),
+      updatedProduct: productsResult.asRight(),
     );
 
     if (historyResult.isLeft()) {

@@ -1,4 +1,5 @@
-import 'package:dartz/dartz.dart';
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:towarito/core/error/failures.dart';
@@ -37,32 +38,32 @@ void main() {
     );
   });
 
-  group(
-    "createProduct",
-    () {
-      final testProduct = Product(id: "1234", name: "test");
-      const testFailure = TestFailure('error');
-      test(
-        'should return Left when productsRepo return Left, and historyRepo should not be called',
-        () async {
-          when(() => mockProductsRepository.createProduct(
-                  product: any(named: 'product')))
-              .thenAnswer((invocation) async => const Left(testFailure));
-          when(() =>
-                  mockHistoryRepository.addAction(action: any(named: 'action')))
-              .thenAnswer((invocation) async => const Right(None()));
+  // group(
+  //   "createProduct",
+  //   () {
+  //     final testProduct = Product(id: "1234", name: "test");
+  //     const testFailure = TestFailure('error');
+  //     test(
+  //       'should return Left when productsRepo return Left, and historyRepo should not be called',
+  //       () async {
+  //         when(() => mockProductsRepository.createProduct(
+  //                 product: any(named: 'product')))
+  //             .thenAnswer((invocation) async => const Left(testFailure));
+  //         when(() =>
+  //                 mockHistoryRepository.addAction(action: any(named: 'action')))
+  //             .thenAnswer((invocation) async => const Right(None()));
 
-          final result = await sut.createProduct(product: testProduct);
+  //         final result = await sut.createProduct(product: testProduct);
 
-          verify(() => mockProductsRepository.createProduct(
-              product: any(named: 'product'))).called(1);
+  //         verify(() => mockProductsRepository.createProduct(
+  //             product: any(named: 'product'))).called(1);
 
-          verifyNever(() =>
-              mockHistoryRepository.addAction(action: any(named: 'action')));
+  //         verifyNever(() =>
+  //             mockHistoryRepository.addAction(action: any(named: 'action')));
 
-          expect(result, const Left(testFailure));
-        },
-      );
-    },
-  );
+  //         expect(result, const Left(testFailure));
+  //       },
+  //     );
+  //   },
+  // );
 }

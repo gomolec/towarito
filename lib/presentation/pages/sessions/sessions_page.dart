@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:towarito/presentation/widgets/page_alert.dart';
 import '../../../core/app/app_scaffold_messager.dart';
 
 import '../../../core/navigation/router.gr.dart';
@@ -60,6 +61,25 @@ class SessionsPageView extends StatelessWidget {
           BlocBuilder<SessionsBloc, SessionsState>(
             builder: (context, state) {
               if (state.status == SessionsStatus.success) {
+                if (state.sessions.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: PageAlert(
+                      leadingIconData: Icons.folder_off_rounded,
+                      title: "Brak sesji",
+                      text:
+                          "\tAby zacząć pracować musisz utworzyć sesję, to właśnie w niej przechowywane są produkty i inne ważne informacje.",
+                      buttons: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            context.router.push(SessionRoute());
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text("Utwórz sesję"),
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 final sessions = List.of(state.sessions);
                 if (state.hasCurrentSession) {
                   sessions.insert(0, state.currentSession!);

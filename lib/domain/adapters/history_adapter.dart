@@ -26,16 +26,16 @@ class HistoryAdapter {
     }
     final undoAction = historyResult.asRight();
     late final Either<Failure, Product> productsResult;
-    switch (undoAction.historyActionType) {
-      case HistoryActionType.productCreated:
+    switch (undoAction.actionType) {
+      case HistoryActionType.created:
         productsResult = await _productsRepository.deleteProduct(
             id: undoAction.updatedProduct!.id);
         break;
-      case HistoryActionType.productUpdated:
+      case HistoryActionType.updated:
         productsResult = await _productsRepository.updateProduct(
             product: undoAction.oldProduct!);
         break;
-      case HistoryActionType.productDeleted:
+      case HistoryActionType.deleted:
         productsResult = await _productsRepository.createProduct(
             product: undoAction.oldProduct!);
         break;
@@ -53,16 +53,16 @@ class HistoryAdapter {
     }
     final redoAction = historyResult.asRight();
     late final Either<Failure, Product> productsResult;
-    switch (redoAction.historyActionType) {
-      case HistoryActionType.productCreated:
+    switch (redoAction.actionType) {
+      case HistoryActionType.created:
         productsResult = await _productsRepository.createProduct(
             product: redoAction.updatedProduct!);
         break;
-      case HistoryActionType.productUpdated:
+      case HistoryActionType.updated:
         productsResult = await _productsRepository.updateProduct(
             product: redoAction.updatedProduct!);
         break;
-      case HistoryActionType.productDeleted:
+      case HistoryActionType.deleted:
         productsResult = await _productsRepository.deleteProduct(
             id: redoAction.oldProduct!.id);
         break;

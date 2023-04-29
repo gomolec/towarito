@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,7 +27,6 @@ class ProductsRepositoryImpl implements ProductsRepository {
     try {
       await _source.openSession(id);
       _refreshProductsStreamData();
-      log("Products session opened");
       return const Right(None());
     } catch (e) {
       return Left(OpenProductsSessionFailure('$e [id: $id]'));
@@ -99,7 +96,6 @@ class ProductsRepositoryImpl implements ProductsRepository {
     final data = ProductsEntity(
       products: products != null ? List.of(products) : null,
     );
-    log("Products Entity: $data");
     _productsStreamController.add(data);
   }
 

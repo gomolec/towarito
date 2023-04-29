@@ -17,17 +17,19 @@ class HistoryActionAdapter extends TypeAdapter<HistoryAction> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HistoryAction(
-      id: fields[0] as String?,
+      id: fields[0] as int,
       oldProduct: fields[1] as Product?,
       updatedProduct: fields[2] as Product?,
       isRedo: fields[3] as bool,
+      actionType: fields[4] as HistoryActionType?,
+      updateType: fields[5] as HistoryUpdateType?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HistoryAction obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +37,11 @@ class HistoryActionAdapter extends TypeAdapter<HistoryAction> {
       ..writeByte(2)
       ..write(obj.updatedProduct)
       ..writeByte(3)
-      ..write(obj.isRedo);
+      ..write(obj.isRedo)
+      ..writeByte(4)
+      ..write(obj.actionType)
+      ..writeByte(5)
+      ..write(obj.updateType);
   }
 
   @override
@@ -57,26 +63,26 @@ class HistoryActionTypeAdapter extends TypeAdapter<HistoryActionType> {
   HistoryActionType read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return HistoryActionType.productCreated;
+        return HistoryActionType.created;
       case 1:
-        return HistoryActionType.productUpdated;
+        return HistoryActionType.updated;
       case 2:
-        return HistoryActionType.productDeleted;
+        return HistoryActionType.deleted;
       default:
-        return HistoryActionType.productCreated;
+        return HistoryActionType.created;
     }
   }
 
   @override
   void write(BinaryWriter writer, HistoryActionType obj) {
     switch (obj) {
-      case HistoryActionType.productCreated:
+      case HistoryActionType.created:
         writer.writeByte(0);
         break;
-      case HistoryActionType.productUpdated:
+      case HistoryActionType.updated:
         writer.writeByte(1);
         break;
-      case HistoryActionType.productDeleted:
+      case HistoryActionType.deleted:
         writer.writeByte(2);
         break;
     }
@@ -89,6 +95,50 @@ class HistoryActionTypeAdapter extends TypeAdapter<HistoryActionType> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is HistoryActionTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class HistoryUpdateTypeAdapter extends TypeAdapter<HistoryUpdateType> {
+  @override
+  final int typeId = 5;
+
+  @override
+  HistoryUpdateType read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return HistoryUpdateType.quantity;
+      case 1:
+        return HistoryUpdateType.bookmarking;
+      case 2:
+        return HistoryUpdateType.none;
+      default:
+        return HistoryUpdateType.quantity;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, HistoryUpdateType obj) {
+    switch (obj) {
+      case HistoryUpdateType.quantity:
+        writer.writeByte(0);
+        break;
+      case HistoryUpdateType.bookmarking:
+        writer.writeByte(1);
+        break;
+      case HistoryUpdateType.none:
+        writer.writeByte(2);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HistoryUpdateTypeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
