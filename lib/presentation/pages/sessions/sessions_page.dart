@@ -61,7 +61,7 @@ class SessionsPageView extends StatelessWidget {
           BlocBuilder<SessionsBloc, SessionsState>(
             builder: (context, state) {
               if (state.status == SessionsStatus.success) {
-                if (state.sessions.isEmpty) {
+                if (state.sessions.isEmpty && !state.hasCurrentSession) {
                   return SliverToBoxAdapter(
                     child: PageAlert(
                       leadingIconData: Icons.folder_off_rounded,

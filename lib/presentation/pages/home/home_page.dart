@@ -22,19 +22,13 @@ class HomePageView extends StatelessWidget {
       routes: const [
         DashboardRoute(),
         ProductsRoute(),
-        DashboardRoute(),
+        ScannerRoute(),
         HistoryRoute(),
         MenuRoute(),
       ],
       bottomNavigationBuilder: (context, tabsRouter) => NavigationBar(
         selectedIndex: tabsRouter.activeIndex,
-        onDestinationSelected: (index) {
-          if (index == 2) {
-            context.router.navigate(const ScannerRoute());
-          } else {
-            tabsRouter.setActiveIndex(index);
-          }
-        },
+        onDestinationSelected: (index) => tabsRouter.setActiveIndex(index),
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.dashboard_outlined),

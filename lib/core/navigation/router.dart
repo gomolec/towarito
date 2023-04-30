@@ -36,10 +36,6 @@ class AppRouter extends $AppRouter {
           ],
         ),
         AutoRoute(
-          path: '/scanner',
-          page: ScannerRoute.page,
-        ),
-        AutoRoute(
           path: '/sessions',
           page: SessionsRoute.page,
         ),
