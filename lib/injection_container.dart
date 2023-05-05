@@ -76,10 +76,11 @@ Future<void> init() async {
 
   //! Data sources
   sl.registerLazySingletonAsync<SessionsLocalDatasource>(() async {
+    final currentSessionIdSource = await Hive.openBox(kCurrentSessionIdBoxName);
+    await currentSessionIdSource.clear();
     return SessionsLocalDatasourceImpl(
       sessionsSource: await Hive.openBox(kSessionsBoxName),
-      currentSessionIdSource: await Hive.openBox(kCurrentSessionIdBoxName)
-        ..clear(),
+      currentSessionIdSource: await Hive.openBox(kCurrentSessionIdBoxName),
     );
   });
 
