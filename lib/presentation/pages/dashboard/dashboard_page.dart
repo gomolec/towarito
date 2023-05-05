@@ -9,6 +9,7 @@ import '../../../domain/adapters/products_adapter.dart';
 import '../../../domain/adapters/sessions_adapter.dart';
 import '../../../injection_container.dart';
 import '../../widgets/page_alert.dart';
+import '../../widgets/product_card.dart';
 import 'bloc/dashboard_bloc.dart';
 import 'widgets/widgets.dart';
 
@@ -162,19 +163,14 @@ class DashboardPageView extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Wrap(
                                 direction: Axis.horizontal,
-                                spacing: 16.0,
+                                spacing: 8.0,
                                 children: state.bookmarkedProducts
                                     .map(
                                       (e) => ProductCard(
-                                        title: e.name,
-                                        subtitle: e.code,
+                                        product: e,
                                         theme: theme,
                                         width: 200.0,
-                                        onTap: () {
-                                          context.router.navigate(ProductRoute(
-                                            initialProductId: e.id,
-                                          ));
-                                        },
+                                        height: 232.0,
                                       ),
                                     )
                                     .toList(),

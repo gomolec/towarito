@@ -48,7 +48,7 @@ class _ProductsPageViewState extends State<ProductsPageView> {
       body: BlocBuilder<ProductsBloc, ProductsState>(
         builder: (context, state) {
           if (state.status == ProductsStatus.success) {
-            return ProductsList(
+            return ProductsView(
               state: state,
               controller: _scrollController,
             );

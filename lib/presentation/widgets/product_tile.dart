@@ -2,11 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/navigation/router.gr.dart';
-import '../../../../core/theme/custom_color.g.dart';
-import '../../../../data/models/models.dart';
-import '../../../widgets/custom_popup_menu_item.dart';
-import '../bloc/products_bloc/products_bloc.dart';
+import '../../core/navigation/router.gr.dart';
+import '../../core/theme/custom_color.g.dart';
+import '../../data/models/models.dart';
+import 'custom_popup_menu_item.dart';
+import '../pages/products/bloc/products_bloc/products_bloc.dart';
 
 class ProductTile extends StatelessWidget {
   final Product product;
