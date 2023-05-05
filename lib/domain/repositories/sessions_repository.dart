@@ -9,6 +9,8 @@ abstract class SessionsRepository {
 
   Future<Either<Failure, Session>> getSession({required String id});
 
+  Future<Either<Failure, Session?>> getCurrentSession();
+
   Future<Either<Failure, Session>> createSession({required Session session});
 
   Future<Either<Failure, None>> updateSession({required Session session});

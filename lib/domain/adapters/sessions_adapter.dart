@@ -43,6 +43,9 @@ class SessionsAdapter {
   Future<Either<Failure, Session>> getSession({required String id}) =>
       _sessionsRepository.getSession(id: id);
 
+  Future<Either<Failure, Session?>> getCurrentSession() =>
+      _sessionsRepository.getCurrentSession();
+
   Future<Either<Failure, None>> startCurrentSession(
       {required String id}) async {
     final sessionsResult =

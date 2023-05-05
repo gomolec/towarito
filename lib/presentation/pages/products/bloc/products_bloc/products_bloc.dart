@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:towarito/core/error/failures.dart';
-import 'package:towarito/core/utilities/products_querier.dart';
-import 'package:towarito/core/utilities/products_sorter.dart';
-import 'package:towarito/domain/adapters/products_adapter.dart';
 
 import '../../../../../core/app/app_scaffold_messager.dart';
+import '../../../../../core/error/failures.dart';
+import '../../../../../core/utilities/products_querier.dart';
+import '../../../../../core/utilities/products_sorter.dart';
 import '../../../../../data/models/models.dart';
+import '../../../../../domain/adapters/products_adapter.dart';
 import '../../../../../domain/entities/products_entity.dart';
 
 part 'products_event.dart';
@@ -92,7 +92,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     emitEitherResult(
       emit,
       result,
-      snackbarSuccessMessage: "Przedmiot został usunięty",
+      snackbarSuccessMessage: event.product.bookmarked
+          ? "Przedmiot został usunięty z zapisanych"
+          : "Przedmiot został dodany do zapisanych",
     );
   }
 

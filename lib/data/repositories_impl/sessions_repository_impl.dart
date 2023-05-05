@@ -83,6 +83,15 @@ class SessionsRepositoryImpl implements SessionsRepository {
   }
 
   @override
+  Future<Either<Failure, Session?>> getCurrentSession() async {
+    try {
+      return Right(_source.getCurrentSession());
+    } catch (e) {
+      return Left(GetCurrentSessionFailure('$e. $id'));
+    }
+  }
+
+  @override
   Stream<SessionsEntity> observeSessionsData() =>
       _sessionsStreamController.stream;
 

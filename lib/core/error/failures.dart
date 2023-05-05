@@ -73,6 +73,14 @@ class GetSessionFailure extends Failure {
       "Wystąpił błąd podczas pobierania sesji o wskazanym id. $text";
 }
 
+class GetCurrentSessionFailure extends Failure {
+  const GetCurrentSessionFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas pobierania aktualnej sesji. $text";
+}
+
 class StartCurrentSessionFailure extends Failure {
   const StartCurrentSessionFailure(super.text);
 
