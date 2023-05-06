@@ -6,6 +6,7 @@ import '../../../core/app/app_scaffold_messager.dart';
 import '../../../domain/adapters/products_adapter.dart';
 import '../../../injection_container.dart';
 import 'bloc/product_bloc.dart';
+import '../../widgets/quantity_buttons.dart';
 import 'widgets/widgets.dart';
 
 class ProductPage extends StatelessWidget {
@@ -143,9 +144,20 @@ class _ProductPageViewState extends State<ProductPageView> {
                           thickness: 1.0,
                           height: 16.0,
                         ),
-                        ProductQuantityButtons(
+                        // ProductQuantityButtons(
+                        //   initialQuantity: state.quantity,
+                        //   initialTargetQuantity: state.targetQuantity,
+                        // ),
+                        QuantityButtons(
+                          theme: Theme.of(context),
                           initialQuantity: state.quantity,
                           initialTargetQuantity: state.targetQuantity,
+                          setQuantity: (value) => context
+                              .read<ProductBloc>()
+                              .add(ProductQuantityChanged(value)),
+                          setTargetQuantity: (value) => context
+                              .read<ProductBloc>()
+                              .add(ProductTargetQuantityChanged(value)),
                         ),
                         const Divider(
                           thickness: 1.0,
