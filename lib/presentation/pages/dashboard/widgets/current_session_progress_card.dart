@@ -33,16 +33,27 @@ class CurrentSessionProgressCard extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: CircularProgressIndicator(
-                      backgroundColor: theme?.colorScheme.surfaceVariant,
-                      strokeWidth: 12.0,
-                      value: value == 0 ? 0.01 : value / 100,
-                    ),
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, BoxConstraints constraints) {
+                    final size = constraints.maxWidth > constraints.maxHeight
+                        ? constraints.maxHeight
+                        : constraints.maxWidth;
+                    return Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: size,
+                        height: size,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: CircularProgressIndicator(
+                            backgroundColor: theme?.colorScheme.surfaceVariant,
+                            strokeWidth: 12.0,
+                            value: value == 0 ? 0.01 : value / 100,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(width: 16.0),

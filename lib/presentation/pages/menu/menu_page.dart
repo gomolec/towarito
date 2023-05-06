@@ -1,12 +1,10 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import '../../../core/navigation/router.gr.dart';
 import 'widgets/menu_footer.dart';
 
 import 'widgets/menu_list_tile.dart';
 import 'widgets/user_info_tile.dart';
 
-@RoutePage()
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
 
@@ -37,7 +35,7 @@ class MenuPageView extends StatelessWidget {
               leadingIcon: Icons.timer_outlined,
               title: "Sesje",
               onTap: () {
-                context.router.push(const SessionsRoute());
+                context.beamToNamed('/menu/sessions');
               },
             ),
             MenuListTile(

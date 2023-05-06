@@ -1,8 +1,7 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/navigation/router.gr.dart';
 import '../../core/theme/custom_color.g.dart';
 import '../../data/models/models.dart';
 import 'custom_popup_menu_item.dart';
@@ -20,9 +19,7 @@ class ProductTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.router.push(ProductRoute(
-          initialProductId: product.id,
-        ));
+        context.beamToNamed('/products/${product.id}');
       },
       child: Padding(
         padding: const EdgeInsets.only(
@@ -162,9 +159,7 @@ class ProductTile extends StatelessWidget {
                     title: "Edytuj",
                     iconData: Icons.edit_note_rounded,
                     onTap: () {
-                      context.router.push(ProductRoute(
-                        initialProductId: product.id,
-                      ));
+                      context.beamToNamed('/products/${product.id}');
                     },
                   ),
                   CustomPopupMenuItem(

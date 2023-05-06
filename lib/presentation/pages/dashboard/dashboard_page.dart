@@ -1,10 +1,9 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
-import '../../../core/navigation/router.gr.dart';
 import '../../../domain/adapters/products_adapter.dart';
 import '../../../domain/adapters/sessions_adapter.dart';
 import '../../../injection_container.dart';
@@ -13,7 +12,6 @@ import '../../widgets/product_card.dart';
 import 'bloc/dashboard_bloc.dart';
 import 'widgets/widgets.dart';
 
-@RoutePage()
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
@@ -69,7 +67,7 @@ class DashboardPageView extends StatelessWidget {
               buttons: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    context.router.navigate(const SessionsRoute());
+                    context.beamToNamed('/menu/sessions');
                   },
                   icon: const Icon(Icons.folder_copy),
                   label: const Text("Pokaż sesje użytkownika"),
@@ -98,9 +96,8 @@ class DashboardPageView extends StatelessWidget {
                         theme: theme,
                         height: 152.0,
                         onTap: () {
-                          context.router.navigate(SessionRoute(
-                            sessionId: state.currentSession!.id,
-                          ));
+                          context.beamToNamed(
+                              '/menu/sessions/${state.currentSession!.id}');
                         },
                       ),
                       const SizedBox(height: 8.0),
@@ -121,7 +118,7 @@ class DashboardPageView extends StatelessWidget {
                               theme: theme,
                               height: 152.0,
                               onTap: () {
-                                context.router.navigate(ProductRoute());
+                                context.beamToNamed('/products/new');
                               },
                             ),
                           ),

@@ -1,11 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:towarito/core/app/app_scaffold_messager.dart';
-import 'package:towarito/core/utilities/products_querier.dart';
-import 'package:towarito/core/utilities/products_sorter.dart';
 
+import 'core/app/app_scaffold_messager.dart';
 import 'core/constants/constants.dart';
-import 'core/navigation/router.dart';
+import 'core/navigation/beamer.dart';
+import 'core/utilities/products_querier.dart';
+import 'core/utilities/products_sorter.dart';
 import 'data/datasources/history_local_datasource.dart';
 import 'data/datasources/products_local_datasource.dart';
 import 'data/datasources/sessions_local_datasource.dart';
@@ -34,8 +34,8 @@ Future<void> init() async {
   );
 
   //! Navigation
-  sl.registerLazySingleton<AppRouter>(
-    () => AppRouter(),
+  sl.registerLazySingleton<AppBeamer>(
+    () => AppBeamer(),
   );
 
   //! Adapters

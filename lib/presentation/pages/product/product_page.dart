@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -9,13 +8,12 @@ import '../../../injection_container.dart';
 import 'bloc/product_bloc.dart';
 import 'widgets/widgets.dart';
 
-@RoutePage()
 class ProductPage extends StatelessWidget {
-  final String? initialProductId;
+  final String? productId;
 
   const ProductPage({
     Key? key,
-    @PathParam() this.initialProductId,
+    this.productId,
   }) : super(key: key);
 
   @override
@@ -25,7 +23,7 @@ class ProductPage extends StatelessWidget {
         productsAdapter: sl<ProductsAdapter>(),
         appScaffoldMessager: sl<AppScaffoldMessager>(),
       )..add(ProductSubscriptionRequested(
-          initialProductId: initialProductId,
+          initialProductId: productId,
         )),
       child: const ProductPageView(),
     );
@@ -53,7 +51,7 @@ class _ProductPageViewState extends State<ProductPageView> {
     return BlocConsumer<ProductBloc, ProductState>(
       listener: (context, state) {
         if (state.status == ProductStatus.success) {
-          context.router.pop();
+          Navigator.of(context).maybePop();
 
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {

@@ -1,16 +1,14 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:towarito/presentation/widgets/page_alert.dart';
 import '../../../core/app/app_scaffold_messager.dart';
 
-import '../../../core/navigation/router.gr.dart';
 import '../../../domain/adapters/sessions_adapter.dart';
 import '../../../injection_container.dart';
 import 'bloc/sessions_bloc.dart';
 import 'widgets/session_tile.dart';
 
-@RoutePage()
 class SessionsPage extends StatelessWidget {
   const SessionsPage({super.key});
 
@@ -37,7 +35,7 @@ class SessionsPageView extends StatelessWidget {
           SliverAppBar.medium(
             leading: IconButton(
               onPressed: () {
-                context.router.pop();
+                Navigator.of(context).maybePop();
               },
               tooltip: 'Wróć',
               icon: const Icon(Icons.arrow_back_rounded),
@@ -51,7 +49,7 @@ class SessionsPageView extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  context.router.push(SessionRoute());
+                  context.beamToNamed('/menu/sessions/new');
                 },
                 tooltip: 'Utwórz sesję',
                 icon: const Icon(Icons.add_circle_outline_rounded),
@@ -71,7 +69,7 @@ class SessionsPageView extends StatelessWidget {
                       buttons: [
                         ElevatedButton.icon(
                           onPressed: () {
-                            context.router.push(SessionRoute());
+                            context.beamToNamed('/menu/sessions/new');
                           },
                           icon: const Icon(Icons.add),
                           label: const Text("Utwórz sesję"),

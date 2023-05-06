@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:towarito/core/app/app_scaffold_messager.dart';
@@ -8,12 +7,11 @@ import '../../../injection_container.dart';
 import 'bloc/session_bloc.dart';
 import 'widgets/widgets.dart';
 
-@RoutePage()
 class SessionPage extends StatelessWidget {
   final String? sessionId;
   const SessionPage({
     super.key,
-    @PathParam() this.sessionId,
+    this.sessionId,
   });
 
   @override
@@ -37,7 +35,7 @@ class SessionPageView extends StatelessWidget {
       listener: (context, state) {
         if (state.status == SessionStatus.failure ||
             state.status == SessionStatus.success) {
-          context.router.pop();
+          Navigator.of(context).maybePop();
         }
       },
       buildWhen: (previous, current) => previous.status != current.status,
@@ -45,9 +43,9 @@ class SessionPageView extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              icon: const Icon(Icons.close_rounded),
+              icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () {
-                context.router.pop();
+                Navigator.of(context).maybePop();
               },
             ),
             titleSpacing: 0.0,

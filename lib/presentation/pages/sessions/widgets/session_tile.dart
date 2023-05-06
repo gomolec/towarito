@@ -1,9 +1,8 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/navigation/router.gr.dart';
 import '../../../../core/theme/custom_color.g.dart';
 import '../../../../data/models/models.dart';
 import '../../../widgets/custom_popup_menu_item.dart';
@@ -177,11 +176,8 @@ class SessionTile extends StatelessWidget {
                 CustomPopupMenuItem(
                   title: "Edytuj",
                   iconData: Icons.edit,
-                  onTap: () => context.router.push(
-                    SessionRoute(
-                      sessionId: session.id,
-                    ),
-                  ),
+                  onTap: () =>
+                      context.beamToNamed('/menu/sessions/${session.id}'),
                 ),
                 const PopupMenuDivider(),
                 CustomPopupMenuItem(
