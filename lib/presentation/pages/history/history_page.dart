@@ -1,14 +1,16 @@
-import 'package:beamer/beamer.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
+import '../../../core/navigation/app_router.dart';
 import '../../../domain/adapters/history_adapter.dart';
 import '../../../injection_container.dart';
 import '../../widgets/page_alert.dart';
 import 'bloc/history_bloc.dart';
 import 'widgets/history_tile.dart';
 
+@RoutePage()
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
 
@@ -71,7 +73,9 @@ class HistoryPageView extends StatelessWidget {
                     buttons: [
                       ElevatedButton.icon(
                         onPressed: () {
-                          context.beamToNamed('/sessions');
+                          AutoRouter.of(context)
+                              .root
+                              .navigate(const SessionsRoute());
                         },
                         icon: const Icon(Icons.folder_copy),
                         label: const Text("Pokaż sesje użytkownika"),

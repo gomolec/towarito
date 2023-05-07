@@ -1,10 +1,9 @@
-import 'package:beamer/beamer.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:towarito/core/app/app_scaffold_messager.dart';
-import 'package:towarito/core/navigation/beamer.dart';
 
 import '../../injection_container.dart';
+import '../navigation/app_router.dart';
 import '../theme/color_schemes.g.dart';
 import '../theme/custom_color.g.dart';
 
@@ -46,11 +45,7 @@ class App extends StatelessWidget {
             colorScheme: darkScheme,
             extensions: [darkCustomColors],
           ),
-          routerDelegate: sl<AppBeamer>().rootDelegate,
-          routeInformationParser: BeamerParser(),
-          backButtonDispatcher: BeamerBackButtonDispatcher(
-            delegate: sl<AppBeamer>().rootDelegate,
-          ),
+          routerConfig: sl<AppRouter>().config(),
         );
       },
     );

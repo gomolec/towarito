@@ -156,7 +156,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
               ? "Przedmiot został zaaktualizowany"
               : "Przedmiot został dodany",
         );
-        add(ProductSubscriptionRequested(initialProductId: product.id));
+        emit(state.copyWith(
+          status: ProductStatus.success,
+          createdId: product.id,
+        ));
       },
     );
   }
@@ -210,7 +213,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       );
     }
     emit(state.copyWith(
-      status: ProductStatus.success,
+      status: ProductStatus.deleted,
     ));
     _appScaffoldMessager.showSnackbar(message: "Przedmiot został usunięty");
   }

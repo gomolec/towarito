@@ -1,7 +1,8 @@
-import 'package:beamer/beamer.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/navigation/app_router.dart';
 import '../../../../data/models/models.dart';
 import '../bloc/products_bloc/products_bloc.dart';
 import 'widgets.dart';
@@ -51,7 +52,7 @@ class ProductsSliverAppBar extends StatelessWidget {
         ),
         IconButton(
           onPressed: () {
-            context.beamToNamed('/products/new');
+            AutoRouter.of(context).root.navigate(ProductRoute());
           },
           tooltip: "Nowy produkt",
           icon: const Icon(Icons.add_rounded),

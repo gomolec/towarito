@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -80,12 +81,7 @@ class _TransparentScrollAppBarState extends State<ProductAppBar>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).maybePop();
-                    },
-                    icon: const Icon(Icons.arrow_back_rounded),
-                  ),
+                  const AutoLeadingButton(),
                   didChanged || !widget.isEditing
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),

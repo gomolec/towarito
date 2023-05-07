@@ -1,6 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:towarito/core/navigation/app_router.dart';
+import 'package:towarito/presentation/pages/products/bloc/products_bloc/products_bloc.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
 import '../../../domain/adapters/products_adapter.dart';
@@ -9,12 +12,13 @@ import 'bloc/product_bloc.dart';
 import '../../widgets/quantity_buttons.dart';
 import 'widgets/widgets.dart';
 
+@RoutePage()
 class ProductPage extends StatelessWidget {
   final String? productId;
 
   const ProductPage({
     Key? key,
-    this.productId,
+    @PathParam('id') this.productId,
   }) : super(key: key);
 
   @override
@@ -51,13 +55,27 @@ class _ProductPageViewState extends State<ProductPageView> {
   Widget build(BuildContext context) {
     return BlocConsumer<ProductBloc, ProductState>(
       listener: (context, state) {
+        if (state.status == ProductStatus.deleted) {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+            Navigator.of(context).maybePop();
+          }
+          return;
+        }
         if (state.status == ProductStatus.success) {
-          Navigator.of(context).maybePop();
-
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
+          if (state.initialProduct != null) {
+            context.read<ProductBloc>().add(ProductSubscriptionRequested(
+                  initialProductId: state.initialProduct!.id,
+                ));
+            return;
+          }
+          AutoRouter.of(context)
+              .popAndPush(ProductRoute(productId: state.createdId));
         }
       },
       buildWhen: (previous, current) => previous.status != current.status,

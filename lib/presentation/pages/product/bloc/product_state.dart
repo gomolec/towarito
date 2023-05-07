@@ -1,6 +1,6 @@
 part of 'product_bloc.dart';
 
-enum ProductStatus { initial, loading, inProgress, success, failure }
+enum ProductStatus { initial, loading, inProgress, success, deleted, failure }
 
 extension ProductStatusX on ProductStatus {
   bool get canViewForm {
@@ -21,19 +21,22 @@ class ProductState extends Equatable {
   final bool bookmarked;
   final String note;
   final bool didChanged;
+  final String createdId;
   final Failure? failure;
 
-  const ProductState(
-      {this.status = ProductStatus.initial,
-      this.initialProduct,
-      this.name = "",
-      this.code = "",
-      this.quantity = 0,
-      this.targetQuantity = 0,
-      this.bookmarked = false,
-      this.note = "",
-      this.didChanged = false,
-      this.failure});
+  const ProductState({
+    this.status = ProductStatus.initial,
+    this.initialProduct,
+    this.name = "",
+    this.code = "",
+    this.quantity = 0,
+    this.targetQuantity = 0,
+    this.bookmarked = false,
+    this.note = "",
+    this.didChanged = false,
+    this.createdId = "",
+    this.failure,
+  });
 
   bool get isEditing => initialProduct != null;
 
@@ -49,13 +52,14 @@ class ProductState extends Equatable {
       bookmarked,
       note,
       didChanged,
+      createdId,
       failure,
     ];
   }
 
   @override
   String toString() {
-    return 'ProductState(status: $status, initialProduct: $initialProduct, name: $name, code: $code, quantity: $quantity, targetQuantity: $targetQuantity, bookmarked: $bookmarked, note_len: ${note.length}, didChanged: $didChanged, failure: $failure)';
+    return 'ProductState(status: $status, initialProduct: $initialProduct, name: $name, code: $code, quantity: $quantity, targetQuantity: $targetQuantity, bookmarked: $bookmarked, note_len: ${note.length}, didChanged: $didChanged, createdId: $createdId, failure: $failure)';
   }
 
   ProductState copyWith({
@@ -68,6 +72,7 @@ class ProductState extends Equatable {
     bool? bookmarked,
     String? note,
     bool? didChanged,
+    String? createdId,
     Failure? Function()? failure,
   }) {
     return ProductState(
@@ -80,6 +85,7 @@ class ProductState extends Equatable {
       bookmarked: bookmarked ?? this.bookmarked,
       note: note ?? this.note,
       didChanged: didChanged ?? this.didChanged,
+      createdId: createdId ?? this.createdId,
       failure: failure != null ? failure() : this.failure,
     );
   }

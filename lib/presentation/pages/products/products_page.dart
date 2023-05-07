@@ -1,14 +1,16 @@
-import 'package:beamer/beamer.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
+import '../../../core/navigation/app_router.dart';
 import '../../../domain/adapters/products_adapter.dart';
 import '../../../injection_container.dart';
 import '../../widgets/page_alert.dart';
 import 'bloc/products_bloc/products_bloc.dart';
 import 'widgets/widgets.dart';
 
+@RoutePage()
 class ProductsPage extends StatelessWidget {
   const ProductsPage({super.key});
 
@@ -66,7 +68,9 @@ class _ProductsPageViewState extends State<ProductsPageView> {
                     buttons: [
                       ElevatedButton.icon(
                         onPressed: () {
-                          context.beamToNamed('/menu/sessions');
+                          AutoRouter.of(context)
+                              .root
+                              .navigate(const SessionsRoute());
                         },
                         icon: const Icon(Icons.folder_copy),
                         label: const Text("Pokaż sesje użytkownika"),

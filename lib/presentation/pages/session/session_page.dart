@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:towarito/core/app/app_scaffold_messager.dart';
@@ -7,11 +8,12 @@ import '../../../injection_container.dart';
 import 'bloc/session_bloc.dart';
 import 'widgets/widgets.dart';
 
+@RoutePage()
 class SessionPage extends StatelessWidget {
   final String? sessionId;
   const SessionPage({
     super.key,
-    this.sessionId,
+    @PathParam('id') this.sessionId,
   });
 
   @override
@@ -42,12 +44,7 @@ class SessionPageView extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: () {
-                Navigator.of(context).maybePop();
-              },
-            ),
+            leading: const AutoLeadingButton(),
             titleSpacing: 0.0,
             title: Text(state.isNewSession ? "Nowa sesja" : "Edytuj sesje"),
             actions: [

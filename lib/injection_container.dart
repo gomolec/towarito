@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:towarito/core/navigation/app_router.dart';
 
 import 'core/app/app_scaffold_messager.dart';
 import 'core/constants/constants.dart';
-import 'core/navigation/beamer.dart';
 import 'core/utilities/products_querier.dart';
 import 'core/utilities/products_sorter.dart';
 import 'data/datasources/history_local_datasource.dart';
@@ -34,8 +34,8 @@ Future<void> init() async {
   );
 
   //! Navigation
-  sl.registerLazySingleton<AppBeamer>(
-    () => AppBeamer(),
+  sl.registerLazySingleton<AppRouter>(
+    () => AppRouter(),
   );
 
   //! Adapters

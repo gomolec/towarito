@@ -1,6 +1,7 @@
-import 'package:beamer/beamer.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/navigation/app_router.dart';
 import '../../core/theme/custom_color.g.dart';
 import '../../data/models/models.dart';
 
@@ -31,7 +32,9 @@ class ProductCard extends StatelessWidget {
       margin: EdgeInsets.zero,
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-        onTap: () => context.beamToNamed('/products/${product.id}'),
+        onTap: () => AutoRouter.of(context)
+            .root
+            .navigate(ProductRoute(productId: product.id)),
         child: SizedBox(
           width: width,
           height: height,
