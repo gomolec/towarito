@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:collection/collection.dart';
 
 import '../../core/constants/constants.dart';
 import '../../core/error/exceptions.dart';
@@ -26,6 +27,12 @@ abstract class ProductsLocalDatasource {
   /// thrown.
   Product getSingleProduct(String id);
 
+  /// Returns a single [Product] with the given code.
+  ///
+  /// If no product with the given code exists, a [ProductNotFoundException] error is
+  /// thrown.
+  Product getSingleProductByCode(String code);
+
   /// Saves and returns a [Product].
   ///
   /// If a [Product] with the same id already exists, it will be replaced.
@@ -45,30 +52,32 @@ class ProductsLocalDatasourceImpl implements ProductsLocalDatasource {
   }) : _datasource = datasource;
 
   Box<Product>? _productsSource;
+  List<Product>? _cachedProducts;
 
   @override
   Future<void> closeSession() async {
     if (_productsSource != null) {
       _productsSource!.close();
       _productsSource = null;
+      _cachedProducts = null;
     }
   }
 
   @override
   Future<Product> deleteProduct(String id) async {
     final product = getSingleProduct(id);
-
     await _productsSource!.delete(product.id);
-
+    _cachedProducts = null;
     return product;
   }
 
   @override
   List<Product>? getProducts() {
-    if (_productsSource != null) {
-      return _productsSource!.values.toList();
+    if (_productsSource == null) {
+      return null;
     }
-    return null;
+    _cachedProducts ??= _productsSource!.values.toList();
+    return _cachedProducts;
   }
 
   @override
@@ -77,6 +86,26 @@ class ProductsLocalDatasourceImpl implements ProductsLocalDatasource {
       throw ProductsSessionNotOpenedException();
     }
     final product = _productsSource!.get(id);
+
+    if (product == null) {
+      throw ProductNotFoundException();
+    }
+
+    return product;
+  }
+
+  @override
+  Product getSingleProductByCode(String code) {
+    if (_productsSource == null) {
+      throw ProductsSessionNotOpenedException();
+    }
+    if (_cachedProducts == null) {
+      getProducts();
+    }
+    //final queriedCode = code.replaceAll(' ', '');
+    final product = _cachedProducts!.firstWhereOrNull(
+      (element) => element.code == code,
+    );
 
     if (product == null) {
       throw ProductNotFoundException();
@@ -98,6 +127,7 @@ class ProductsLocalDatasourceImpl implements ProductsLocalDatasource {
       throw ProductsSessionNotOpenedException();
     }
     _productsSource!.put(product.id, product);
+    _cachedProducts = null;
     return product;
   }
 }

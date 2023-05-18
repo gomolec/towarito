@@ -2,23 +2,26 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
 import 'package:towarito/core/navigation/app_router.dart';
 import 'package:towarito/presentation/pages/products/bloc/products_bloc/products_bloc.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
 import '../../../domain/adapters/products_adapter.dart';
 import '../../../injection_container.dart';
-import 'bloc/product_bloc.dart';
 import '../../widgets/quantity_buttons.dart';
+import 'bloc/product_bloc.dart';
 import 'widgets/widgets.dart';
 
 @RoutePage()
 class ProductPage extends StatelessWidget {
   final String? productId;
+  final String? productCode;
 
   const ProductPage({
     Key? key,
     @PathParam('id') this.productId,
+    this.productCode,
   }) : super(key: key);
 
   @override
@@ -29,6 +32,7 @@ class ProductPage extends StatelessWidget {
         appScaffoldMessager: sl<AppScaffoldMessager>(),
       )..add(ProductSubscriptionRequested(
           initialProductId: productId,
+          initialProductCode: productCode,
         )),
       child: const ProductPageView(),
     );

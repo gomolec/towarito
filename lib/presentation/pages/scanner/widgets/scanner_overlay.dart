@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
-
-import 'scanner_info_text.dart';
-import 'torch_button.dart';
+import 'widgets.dart';
 
 class ScannerOverlay extends StatelessWidget {
   const ScannerOverlay({
@@ -13,28 +10,19 @@ class ScannerOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        children: [
+        children: const [
           Expanded(
             flex: 4,
-            child: Column(
-              children: const [
-                ScannerInfoText(),
-              ],
-            ),
+            child: ScannerInfoText(),
           ),
-          const Expanded(
+          Expanded(
             flex: 5,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 16.0),
-              child: RiveAnimation.asset(
-                'assets/scanner_overlay.riv',
-              ),
-            ),
+            child: ScannerAnimation(),
           ),
-          const Expanded(
+          Expanded(
             flex: 4,
             child: Center(
-              child: TorchButton(),
+              child: FlashlightButton(),
             ),
           ),
         ],

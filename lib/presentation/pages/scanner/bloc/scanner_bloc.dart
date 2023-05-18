@@ -1,58 +1,67 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/app/app_scaffold_messager.dart';
-import '../../../../core/error/failures.dart';
-import '../../../../domain/adapters/products_adapter.dart';
-import '../../../../domain/entities/products_entity.dart';
+import '../../../../domain/adapters/sessions_adapter.dart';
+import '../../../../domain/entities/sessions_entity.dart';
 
 part 'scanner_event.dart';
 part 'scanner_state.dart';
 
 class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
-  final ProductsAdapter _productsAdapter;
+  final SessionsAdapter _sessionsAdapter;
   final AppScaffoldMessager _appScaffoldMessager;
 
   ScannerBloc({
-    required ProductsAdapter productsAdapter,
+    required SessionsAdapter sessionsAdapter,
     required AppScaffoldMessager appScaffoldMessager,
-  })  : _productsAdapter = productsAdapter,
+  })  : _sessionsAdapter = sessionsAdapter,
         _appScaffoldMessager = appScaffoldMessager,
         super(const ScannerState()) {
     on<ScannerSubscriptionRequested>(_onSubscriptionRequested);
     on<ScannerBarcodeDetected>(_onBarcodeDetected);
     on<ScannerFlashlightToggled>(_onFlashlightToggled);
+    on<ScannerResumed>(_onResumed);
+    on<ScannerPaused>(_onPaused);
   }
+
+  bool _currentSessionActive = false;
 
   Future<void> _onSubscriptionRequested(
     ScannerSubscriptionRequested event,
     Emitter<ScannerState> emit,
   ) async {
     emit(state.copyWith(
-      status: ScannerStatus.loading,
-      torchState:
-          event.isTorchAvailable ? TorchState.off : TorchState.unavailable,
+      torchState: event.flashlightAvailable
+          ? FlashlightState.off
+          : FlashlightState.unavailable,
     ));
-    await emit.onEach<ProductsEntity>(
-      _productsAdapter.observeProductsData(),
+    await emit.onEach<SessionsEntity>(
+      _sessionsAdapter.observeSessionsData(),
       onData: (data) {
-        log(data.toString());
-        if (data.isSessionOpened) {
+        if (data.hasCurrentSession == _currentSessionActive) {
+          return;
+        }
+        _currentSessionActive = data.hasCurrentSession;
+        if (!data.hasCurrentSession) {
           emit(state.copyWith(
-            status: ScannerStatus.success,
+            status: ScannerStatus.paused,
+            currentSessionActive: _currentSessionActive,
+            barcode: () => null,
           ));
           return;
         }
         emit(state.copyWith(
-          status: ScannerStatus.noSession,
+          status: ScannerStatus.scanning,
+          currentSessionActive: _currentSessionActive,
+          barcode: () => null,
         ));
       },
       onError: (error, stackTrace) {
         emit(state.copyWith(
-          status: ScannerStatus.failure,
-          failure: () => UnnamedFailure(error.toString()),
+          status: ScannerStatus.paused,
+          currentSessionActive: false,
+          barcode: () => null,
         ));
         _appScaffoldMessager.showSnackbar(message: error.toString());
       },
@@ -66,12 +75,12 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
     if (event.barcode.isEmpty) {
       return;
     }
-    if (state.status == ScannerStatus.noSession) {
+    if (state.status != ScannerStatus.scanning) {
       return;
     }
     emit(state.copyWith(
-      status: ScannerStatus.success,
-      scannedBarcode: () => event.barcode,
+      status: ScannerStatus.paused,
+      barcode: () => event.barcode,
     ));
   }
 
@@ -79,12 +88,34 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
     ScannerFlashlightToggled event,
     Emitter<ScannerState> emit,
   ) {
-    if (state.torchState == TorchState.unavailable) {
+    if (state.torchState == FlashlightState.unavailable) {
       return;
     }
     emit(state.copyWith(
-      torchState: event.state == TorchState.on ? TorchState.off : TorchState.on,
-      scannedBarcode: () => null,
+      torchState: event.state == FlashlightState.on
+          ? FlashlightState.off
+          : FlashlightState.on,
+      barcode: () => null,
+    ));
+  }
+
+  void _onResumed(
+    ScannerResumed event,
+    Emitter<ScannerState> emit,
+  ) {
+    emit(state.copyWith(
+      status: ScannerStatus.scanning,
+      barcode: () => null,
+    ));
+  }
+
+  void _onPaused(
+    ScannerPaused event,
+    Emitter<ScannerState> emit,
+  ) {
+    emit(state.copyWith(
+      status: ScannerStatus.paused,
+      barcode: () => null,
     ));
   }
 }

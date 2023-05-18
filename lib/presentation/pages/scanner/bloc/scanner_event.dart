@@ -8,14 +8,14 @@ abstract class ScannerEvent extends Equatable {
 }
 
 class ScannerSubscriptionRequested extends ScannerEvent {
-  final bool isTorchAvailable;
+  final bool flashlightAvailable;
 
   const ScannerSubscriptionRequested({
-    required this.isTorchAvailable,
+    required this.flashlightAvailable,
   });
 
   @override
-  List<Object> get props => [isTorchAvailable];
+  List<Object> get props => [flashlightAvailable];
 }
 
 class ScannerBarcodeDetected extends ScannerEvent {
@@ -30,7 +30,7 @@ class ScannerBarcodeDetected extends ScannerEvent {
 }
 
 class ScannerFlashlightToggled extends ScannerEvent {
-  final TorchState state;
+  final FlashlightState state;
 
   const ScannerFlashlightToggled({
     required this.state,
@@ -38,4 +38,12 @@ class ScannerFlashlightToggled extends ScannerEvent {
 
   @override
   List<Object> get props => [state];
+}
+
+class ScannerResumed extends ScannerEvent {
+  const ScannerResumed();
+}
+
+class ScannerPaused extends ScannerEvent {
+  const ScannerPaused();
 }

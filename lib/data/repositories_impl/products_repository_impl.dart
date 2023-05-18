@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:towarito/core/error/exceptions.dart';
 
 import '../../core/error/failures.dart';
 import '../../domain/entities/products_entity.dart';
@@ -72,8 +73,23 @@ class ProductsRepositoryImpl implements ProductsRepository {
     try {
       final product = _source.getSingleProduct(id);
       return Right(product);
+    } on ProductNotFoundException {
+      return Left(ProductNotFoundFailure(' [id: $id]'));
     } catch (e) {
       return Left(GetProductFailure('$e [id: $id]'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Product>> getProductByCode(
+      {required String code}) async {
+    try {
+      final product = _source.getSingleProductByCode(code);
+      return Right(product);
+    } on ProductNotFoundException {
+      return Left(ProductNotFoundFailure(' [code: $code]'));
+    } catch (e) {
+      return Left(GetProductFailure('$e [code: $code]'));
     }
   }
 

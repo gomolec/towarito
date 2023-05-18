@@ -1,47 +1,45 @@
 part of 'scanner_bloc.dart';
 
-enum ScannerStatus { initial, loading, noSession, success, failure }
+enum ScannerStatus { loading, paused, scanning }
 
-enum TorchState { on, off, unavailable }
+enum FlashlightState { on, off, unavailable }
 
 class ScannerState extends Equatable {
   final ScannerStatus status;
-  final TorchState torchState;
-  final String? scannedBarcode;
-  final Failure? failure;
+  final FlashlightState torchState;
+  final bool currentSessionActive;
+  final String? barcode;
 
   const ScannerState({
-    this.status = ScannerStatus.initial,
-    this.torchState = TorchState.unavailable,
-    this.scannedBarcode,
-    this.failure,
+    this.status = ScannerStatus.loading,
+    this.torchState = FlashlightState.unavailable,
+    this.currentSessionActive = false,
+    this.barcode,
   });
 
   ScannerState copyWith({
     ScannerStatus? status,
-    TorchState? torchState,
-    String? Function()? scannedBarcode,
-    Failure? Function()? failure,
+    FlashlightState? torchState,
+    bool? currentSessionActive,
+    String? Function()? barcode,
   }) {
     return ScannerState(
       status: status ?? this.status,
       torchState: torchState ?? this.torchState,
-      scannedBarcode:
-          scannedBarcode != null ? scannedBarcode() : this.scannedBarcode,
-      failure: failure != null ? failure() : this.failure,
+      currentSessionActive: currentSessionActive ?? this.currentSessionActive,
+      barcode: barcode != null ? barcode() : this.barcode,
     );
   }
 
   @override
-  String toString() {
-    return 'ScannerState(status: $status, torchState: $torchState, scannedBarcode: $scannedBarcode, failure: $failure)';
-  }
+  String toString() =>
+      'ScannerState(status: $status, torchState: $torchState, currentSessionActive: $currentSessionActive, barcode: $barcode)';
 
   @override
   List<Object?> get props => [
         status,
         torchState,
-        scannedBarcode,
-        failure,
+        currentSessionActive,
+        barcode,
       ];
 }

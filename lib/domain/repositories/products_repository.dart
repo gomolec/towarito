@@ -9,6 +9,8 @@ abstract class ProductsRepository {
 
   Future<Either<Failure, Product>> getProduct({required String id});
 
+  Future<Either<Failure, Product>> getProductByCode({required String code});
+
   Future<Either<Failure, Product>> createProduct({required Product product});
 
   Future<Either<Failure, Product>> updateProduct({required Product product});

@@ -9,13 +9,15 @@ abstract class ProductEvent extends Equatable {
 
 class ProductSubscriptionRequested extends ProductEvent {
   final String? initialProductId;
+  final String? initialProductCode;
 
   const ProductSubscriptionRequested({
     this.initialProductId,
+    this.initialProductCode,
   });
 
   @override
-  List<Object?> get props => [initialProductId];
+  List<Object?> get props => [initialProductId, initialProductCode];
 }
 
 class ProductQuantityChanged extends ProductEvent {

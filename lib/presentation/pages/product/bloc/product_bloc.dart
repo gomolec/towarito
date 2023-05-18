@@ -55,7 +55,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       status: ProductStatus.inProgress,
       initialProduct: initialProduct,
       name: initialProduct?.name,
-      code: initialProduct?.code,
+      code: initialProduct?.code ?? event.initialProductCode,
       quantity: initialProduct?.quantity,
       targetQuantity: initialProduct?.targetQuantity,
       bookmarked: initialProduct?.bookmarked,
@@ -183,13 +183,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           _appScaffoldMessager.showSnackbar(message: l.errorMessage);
           return;
         },
-        (r) {},
+        (r) {
+          emit(state.copyWith(
+            bookmarked: event.bookmarked,
+            status: ProductStatus.inProgress,
+          ));
+        },
       );
     }
-    emit(state.copyWith(
-      bookmarked: event.bookmarked,
-      status: ProductStatus.inProgress,
-    ));
   }
 
   Future<void> _onDeleted(

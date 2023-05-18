@@ -51,6 +51,9 @@ class ProductsAdapter {
   Future<Either<Failure, Product>> getProduct({required String id}) =>
       _productsRepository.getProduct(id: id);
 
+  Future<Either<Failure, Product>> getProductByCode({required String code}) =>
+      _productsRepository.getProductByCode(code: code);
+
   Stream<ProductsEntity> observeProductsData() =>
       _productsRepository.observeProductsData();
 

@@ -43,6 +43,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: ProductPage(
           key: args.key,
           productId: args.productId,
+          productCode: args.productCode,
         ),
       );
     },
@@ -170,12 +171,14 @@ class ProductRoute extends PageRouteInfo<ProductRouteArgs> {
   ProductRoute({
     Key? key,
     String? productId,
+    String? productCode,
     List<PageRouteInfo>? children,
   }) : super(
           ProductRoute.name,
           args: ProductRouteArgs(
             key: key,
             productId: productId,
+            productCode: productCode,
           ),
           rawPathParams: {'id': productId},
           initialChildren: children,
@@ -191,15 +194,18 @@ class ProductRouteArgs {
   const ProductRouteArgs({
     this.key,
     this.productId,
+    this.productCode,
   });
 
   final Key? key;
 
   final String? productId;
 
+  final String? productCode;
+
   @override
   String toString() {
-    return 'ProductRouteArgs{key: $key, productId: $productId}';
+    return 'ProductRouteArgs{key: $key, productId: $productId, productCode: $productCode}';
   }
 }
 

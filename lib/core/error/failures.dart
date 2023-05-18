@@ -134,12 +134,19 @@ class UpdateProductFailure extends Failure {
       "Wystąpił błąd podczas modyfikowania produktu. $text";
 }
 
+class ProductNotFoundFailure extends Failure {
+  const ProductNotFoundFailure(super.text);
+
+  @override
+  String get errorMessage => "Nie znaleziono produktu o wskazanym id. $text";
+}
+
 class GetProductFailure extends Failure {
   const GetProductFailure(super.text);
 
   @override
   String get errorMessage =>
-      "Wystąpił błąd podczas pobierania sesji o wskazanym id. $text";
+      "Wystąpił błąd podczas pobierania produktu o wskazanym id. $text";
 }
 
 class HistoryUndoFailure extends Failure {
