@@ -6,16 +6,17 @@ import 'package:rive/rive.dart';
 
 import '../bloc/scanner_bloc.dart';
 
-class ScannerAnimation extends StatefulWidget {
-  const ScannerAnimation({
+class ScannerAnimatedIndicator extends StatefulWidget {
+  const ScannerAnimatedIndicator({
     super.key,
   });
 
   @override
-  State<ScannerAnimation> createState() => _ScannerAnimationState();
+  State<ScannerAnimatedIndicator> createState() =>
+      _ScannerAnimatedIndicatorState();
 }
 
-class _ScannerAnimationState extends State<ScannerAnimation> {
+class _ScannerAnimatedIndicatorState extends State<ScannerAnimatedIndicator> {
   late RiveAnimationController _controller;
 
   @override

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:towarito/core/navigation/app_router.dart';
-import 'package:towarito/presentation/pages/products/bloc/products_bloc/products_bloc.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
 import '../../../domain/adapters/products_adapter.dart';

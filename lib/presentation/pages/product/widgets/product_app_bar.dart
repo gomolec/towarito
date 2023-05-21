@@ -81,7 +81,12 @@ class _TransparentScrollAppBarState extends State<ProductAppBar>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const AutoLeadingButton(),
+                  IconButton(
+                    onPressed: () {
+                      AutoRouter.of(context).pop();
+                    },
+                    icon: const Icon(Icons.arrow_back_rounded),
+                  ),
                   didChanged || !widget.isEditing
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),

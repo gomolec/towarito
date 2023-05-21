@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/models/models.dart';
+import '../../../widgets/sheet_dragable_indicator.dart';
 import '../bloc/product_filter_bloc/products_filter_bloc.dart';
 
 class SortingBottomSheet extends StatelessWidget {
@@ -43,24 +44,8 @@ class SortingBottomSheetView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 22.0,
-                  bottom: 8.0,
-                ),
-                child: Container(
-                  width: 32.0,
-                  height: 4.0,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurfaceVariant
-                        .withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(2.0),
-                  ),
-                ),
-              ),
+            children: [
+              const SheetDragableIndicator(),
               Row(
                 children: [
                   Expanded(

@@ -17,12 +17,12 @@ class ScannerOverlay extends StatelessWidget {
           ),
           Expanded(
             flex: 5,
-            child: ScannerAnimation(),
+            child: ScannerAnimatedIndicator(),
           ),
           Expanded(
             flex: 4,
             child: Center(
-              child: FlashlightButton(),
+              child: ScannerFlashlightButton(),
             ),
           ),
         ],

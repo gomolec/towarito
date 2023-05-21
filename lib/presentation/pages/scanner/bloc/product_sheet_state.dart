@@ -1,17 +1,17 @@
-part of 'product_bloc.dart';
+part of 'product_sheet_bloc.dart';
 
-enum ProductStatus { loading, found, notFound, failure }
+enum ProductSheetStatus { loading, found, notFound, failure }
 
-class ProductState extends Equatable {
-  final ProductStatus status;
+class ProductSheetState extends Equatable {
+  final ProductSheetStatus status;
   final String code;
   final Product? product;
   final int quantity;
   final int targetQuantity;
   final bool didChanged;
 
-  const ProductState({
-    this.status = ProductStatus.loading,
+  const ProductSheetState({
+    this.status = ProductSheetStatus.loading,
     this.code = '',
     this.product,
     this.quantity = 0,
@@ -19,15 +19,15 @@ class ProductState extends Equatable {
     this.didChanged = false,
   });
 
-  ProductState copyWith({
-    ProductStatus? status,
+  ProductSheetState copyWith({
+    ProductSheetStatus? status,
     String? code,
     Product? Function()? product,
     int? quantity,
     int? targetQuantity,
     bool? didChanged,
   }) {
-    return ProductState(
+    return ProductSheetState(
       status: status ?? this.status,
       code: code ?? this.code,
       product: product != null ? product() : this.product,
@@ -39,7 +39,7 @@ class ProductState extends Equatable {
 
   @override
   String toString() {
-    return 'ProductState(status: $status, code: $code, product: $product, quantity: $quantity, targetQuantity: $targetQuantity, didChanged: $didChanged)';
+    return 'ProductSheetState(status: $status, code: $code, product: $product, quantity: $quantity, targetQuantity: $targetQuantity, didChanged: $didChanged)';
   }
 
   @override

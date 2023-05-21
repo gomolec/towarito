@@ -2,13 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import '../../../core/app/app_scaffold_messager.dart';
-import 'widgets/product_bottom_sheet.dart';
 
+import '../../../core/app/app_scaffold_messager.dart';
 import '../../../core/navigation/app_router.dart';
+import '../../../domain/adapters/products_adapter.dart';
 import '../../../domain/adapters/sessions_adapter.dart';
 import '../../../injection_container.dart';
+import 'bloc/product_sheet_bloc.dart';
 import 'bloc/scanner_bloc.dart';
+import 'widgets/product_bottom_sheet.dart';
 import 'widgets/scanner_overlay.dart';
 
 @RoutePage()
@@ -17,11 +19,22 @@ class ScannerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ScannerBloc(
-        sessionsAdapter: sl<SessionsAdapter>(),
-        appScaffoldMessager: sl<AppScaffoldMessager>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ScannerBloc(
+            sessionsAdapter: sl<SessionsAdapter>(),
+            appScaffoldMessager: sl<AppScaffoldMessager>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ProductSheetBloc(
+            productsAdapter: sl<ProductsAdapter>(),
+            appScaffoldMessager: sl<AppScaffoldMessager>(),
+          ),
+          //..add(const ProductSheetSubscriptionRequested()),
+        ),
+      ],
       child: const ScannerPageView(),
     );
   }
@@ -66,6 +79,7 @@ class _ScannerPageViewState extends State<ScannerPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final productSheetBloc = context.read<ProductSheetBloc>();
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -74,6 +88,7 @@ class _ScannerPageViewState extends State<ScannerPageView> {
               previous.barcode != current.barcode,
           listener: (context, state) async {
             if (state.barcode != null) {
+              productSheetBloc.add(ProductSheetQueried(state.barcode!));
               await showModalBottomSheet(
                 isScrollControlled: true,
                 elevation: 1.0,
@@ -83,8 +98,9 @@ class _ScannerPageViewState extends State<ScannerPageView> {
                 ),
                 context: context,
                 builder: (BuildContext context) {
-                  return ProductBottomSheet(
-                    code: state.barcode!,
+                  return BlocProvider.value(
+                    value: productSheetBloc,
+                    child: const ProductBottomSheet(),
                   );
                 },
               );

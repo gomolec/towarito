@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/scanner_bloc.dart';
 
-class FlashlightButton extends StatelessWidget {
-  const FlashlightButton({
+class ScannerFlashlightButton extends StatelessWidget {
+  const ScannerFlashlightButton({
     super.key,
   });
 
