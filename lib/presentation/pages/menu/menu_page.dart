@@ -43,7 +43,9 @@ class MenuPageView extends StatelessWidget {
             MenuListTile(
               leadingIcon: Icons.file_download_outlined,
               title: "Import",
-              onTap: () {},
+              onTap: () {
+                AutoRouter.of(context).root.navigate(const ImportRoute());
+              },
             ),
             MenuListTile(
               leadingIcon: Icons.file_upload_outlined,

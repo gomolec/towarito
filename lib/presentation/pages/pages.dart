@@ -6,3 +6,4 @@ export 'products/products_page.dart';
 export 'scanner/scanner_page.dart';
 export 'session/session_page.dart';
 export 'sessions/sessions_page.dart';
+export 'import/import_page.dart';

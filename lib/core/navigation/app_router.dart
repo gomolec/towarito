@@ -71,6 +71,10 @@ class AppRouter extends _$AppRouter {
                   page: MenuRoute.page,
                 ),
                 AutoRoute(
+                  path: 'import',
+                  page: ImportRoute.page,
+                ),
+                AutoRoute(
                   path: 'sessions',
                   page: SessionsRouterRoute.page,
                   children: [
