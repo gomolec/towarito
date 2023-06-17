@@ -37,7 +37,14 @@ class ProductsSorter {
     }
 
     //sortuje na góre oflagowane produkty
-    filteredProducts.sort((a, b) => a.bookmarked || !b.bookmarked ? -1 : 1);
+    // filteredProducts.sort((a, b) => b.bookmarked ? 1 : -1);
+    int bookmarked = 0;
+    for (var i = 0; i < filteredProducts.length; i++) {
+      if (filteredProducts[i].bookmarked) {
+        filteredProducts.insert(0 + bookmarked, filteredProducts.removeAt(i));
+        bookmarked++;
+      }
+    }
 
     return filteredProducts;
   }
