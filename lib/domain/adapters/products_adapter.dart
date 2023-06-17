@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 
 import '../../core/error/failures.dart';
 import '../../core/extensions/either_extension.dart';
+import '../../core/utilities/import_results.dart';
+import '../../core/utilities/imported_file_structure.dart';
 import '../../data/models/models.dart';
 import '../entities/products_entity.dart';
 import '../repositories/repositories.dart';
@@ -79,4 +83,12 @@ class ProductsAdapter {
     }
     return productsResult;
   }
+
+  Future<Either<Failure, List<String>>> importFile({required File file}) =>
+      _productsRepository.importFile(file: file);
+
+  Future<Either<Failure, ImportResults>> importProducts({
+    required ImportedFileStructure structure,
+  }) =>
+      _productsRepository.importProducts(structure: structure);
 }

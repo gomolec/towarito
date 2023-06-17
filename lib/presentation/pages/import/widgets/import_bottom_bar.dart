@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ImportBottomBar extends StatelessWidget {
+  final String buttonText;
+  final double progress;
+  final void Function()? onTap;
+
   const ImportBottomBar({
-    super.key,
-  });
+    Key? key,
+    required this.buttonText,
+    required this.progress,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +18,8 @@ class ImportBottomBar extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const LinearProgressIndicator(
-            value: 0.25,
+          LinearProgressIndicator(
+            value: progress,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -23,8 +30,8 @@ class ImportBottomBar extends StatelessWidget {
               children: [
                 Expanded(
                   child: FilledButton(
-                    onPressed: () {},
-                    child: const Text("Przejdz dalej"),
+                    onPressed: onTap,
+                    child: Text(buttonText),
                   ),
                 ),
               ],

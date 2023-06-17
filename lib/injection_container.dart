@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:towarito/core/navigation/app_router.dart';
+import 'package:towarito/core/services/import_service.dart';
 
 import 'core/app/app_scaffold_messager.dart';
 import 'core/constants/constants.dart';
@@ -26,6 +27,11 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<ProductsSorter>(
     () => const ProductsSorter(),
+  );
+
+  //! Services
+  sl.registerLazySingleton<ImportService>(
+    () => ImportService(),
   );
 
   //! App
@@ -63,7 +69,10 @@ Future<void> init() async {
 
   //! Respositories
   sl.registerLazySingleton<ProductsRepository>(
-    () => ProductsRepositoryImpl(source: sl<ProductsLocalDatasource>()),
+    () => ProductsRepositoryImpl(
+      source: sl<ProductsLocalDatasource>(),
+      importService: sl<ImportService>(),
+    ),
   );
 
   sl.registerLazySingleton<HistoryRepository>(

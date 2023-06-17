@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomDropdownButton extends StatefulWidget {
-  final List<DropdownMenuItem> items;
+  final List<DropdownMenuItem<int?>> items;
   final void Function(dynamic)? onChanged;
   final String? labelText;
   final String? helperText;
+  final bool isRequired;
 
   const CustomDropdownButton({
     Key? key,
@@ -12,6 +13,7 @@ class CustomDropdownButton extends StatefulWidget {
     this.onChanged,
     this.labelText,
     this.helperText,
+    this.isRequired = false,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
+    return DropdownButtonFormField<int?>(
       value: _value,
       items: widget.items,
       onChanged: (value) {
@@ -47,6 +49,14 @@ class _CustomDropdownButtonState extends State<CustomDropdownButton> {
             : null,
       ),
       isExpanded: true,
+      validator: widget.isRequired
+          ? (value) {
+              if (value == null) {
+                return 'Pole jest wymagane';
+              }
+              return null;
+            }
+          : null,
     );
   }
 }

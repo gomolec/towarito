@@ -187,3 +187,32 @@ class CreateHistoryActionFailure extends Failure {
   String get errorMessage =>
       "Wystąpił błąd podczas tworzenia nowej akcji historii. $text";
 }
+
+class ImportFileFailure extends Failure {
+  const ImportFileFailure(super.text);
+
+  @override
+  String get errorMessage => "Wystąpił błąd importowania pliku. $text";
+}
+
+class ImportProductsFailure extends Failure {
+  const ImportProductsFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas importowania produktów. $text";
+}
+
+// class FileExtensionNotSupportedFailure extends Failure {
+//   const FileExtensionNotSupportedFailure(super.text);
+
+//   @override
+//   String get errorMessage =>
+//       "Plik o tym rozszerzeniu nie jest wspierany. $text";
+// }
+// class EmptyFileFailure extends Failure {
+//   const EmptyFileFailure(super.text);
+
+//   @override
+//   String get errorMessage => "Plik nie zawiera żadnych informacji. $text";
+// }

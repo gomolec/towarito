@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:towarito/presentation/pages/import/bloc/import_bloc.dart';
 
 import 'import_method_card.dart';
 
@@ -32,7 +34,9 @@ class SelectImportMethodView extends StatelessWidget {
               title: "Import z pliku CSV",
               subtitle:
                   "Importuje przy użyciu kreatora produkty z pliku o rozszerzeniu .csv, który można otrzymać eksportując arkusz kalkulacyjny.",
-              onTap: () {},
+              onTap: () => context
+                  .read<ImportBloc>()
+                  .add(const ImportMethodSelected(importType: ImportType.csv)),
               theme: theme,
             ),
             const SizedBox(height: 16.0),
@@ -41,7 +45,9 @@ class SelectImportMethodView extends StatelessWidget {
               title: "Import z tabeli HTML",
               subtitle:
                   "Importuje przy użyciu kreatora produkty zawarte w tabeli HTML, uprzednio skopiowanej ze strony internetowej.",
-              onTap: () {},
+              onTap: () => context
+                  .read<ImportBloc>()
+                  .add(const ImportMethodSelected(importType: ImportType.html)),
               theme: theme,
             ),
             const SizedBox(height: 16.0),
