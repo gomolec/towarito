@@ -101,14 +101,15 @@ class BottomLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: SizedBox(
           height: 32,
           width: 32,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.4,
+          child: Text(
+            "Ładowanie produktów...",
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),
