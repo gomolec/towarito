@@ -7,6 +7,8 @@ class ProductsState extends Equatable {
   final List<Product> products;
   final ProductsFilter filter;
   final String query;
+  final bool hasReachedMax;
+  final bool shouldReturnToTop;
   final Failure? failure;
 
   const ProductsState({
@@ -14,6 +16,8 @@ class ProductsState extends Equatable {
     this.products = const [],
     this.filter = const ProductsFilter(),
     this.query = "",
+    this.hasReachedMax = false,
+    this.shouldReturnToTop = false,
     this.failure,
   });
 
@@ -22,6 +26,8 @@ class ProductsState extends Equatable {
     List<Product>? products,
     ProductsFilter? filter,
     String? query,
+    bool? hasReachedMax,
+    bool? shouldReturnToTop,
     Failure? Function()? failure,
   }) {
     return ProductsState(
@@ -29,13 +35,15 @@ class ProductsState extends Equatable {
       products: products ?? this.products,
       filter: filter ?? this.filter,
       query: query ?? this.query,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      shouldReturnToTop: shouldReturnToTop ?? this.shouldReturnToTop,
       failure: failure != null ? failure() : this.failure,
     );
   }
 
   @override
   String toString() {
-    return 'ProductsState(status: $status, products: $products, filter: $filter, query: $query, failure: $failure)';
+    return 'ProductsState(status: $status, products: ${products.length}, filter: $filter, query: $query, hasReachedMax: $hasReachedMax, shouldReturnToTop: $shouldReturnToTop, failure: $failure)';
   }
 
   @override
@@ -45,6 +53,8 @@ class ProductsState extends Equatable {
       products,
       filter,
       query,
+      hasReachedMax,
+      shouldReturnToTop,
       failure,
     ];
   }

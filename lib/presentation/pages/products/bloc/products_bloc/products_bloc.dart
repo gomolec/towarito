@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:stream_transform/stream_transform.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 import '../../../../../core/app/app_scaffold_messager.dart';
 import '../../../../../core/error/failures.dart';
@@ -19,6 +21,12 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   final ProductsQuerier _querier = const ProductsQuerier();
   final ProductsSorter _sorter = const ProductsSorter();
 
+  EventTransformer<E> throttleDroppable<E>(Duration duration) {
+    return (events, mapper) {
+      return droppable<E>().call(events.throttle(duration), mapper);
+    };
+  }
+
   ProductsBloc({
     required ProductsAdapter productsAdapter,
     required AppScaffoldMessager appScaffoldMessager,
@@ -30,9 +38,17 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<ProductBookmarkingToggled>(_onProductMarkingToggled);
     on<ProductsAppliedFilter>(_onProductsAppliedFilter);
     on<ProductsQueried>(_onProductsQueried);
+    on<ProductsFetched>(
+      _onProductsFetched,
+      transformer: throttleDroppable(throttleDuration),
+    );
   }
 
+  static const _paginationLimit = 20;
+  static const throttleDuration = Duration(milliseconds: 100);
+
   List<Product> _products = [];
+  List<Product> _sortedProducts = [];
 
   Future<void> _onSubscriptionRequested(
     ProductsSubscriptionRequested event,
@@ -51,15 +67,20 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
               query: state.query,
               filter: state.filter,
             ),
+            shouldReturnToTop: false,
+            hasReachedMax: _sortedProducts.length <= _paginationLimit,
           ));
           return;
         }
         _products = List.empty();
+        _sortedProducts = List.empty();
         emit(state.copyWith(
           status: ProductsStatus.initial,
           products: _products,
           filter: const ProductsFilter(),
           query: "",
+          hasReachedMax: true,
+          shouldReturnToTop: true,
         ));
       },
       onError: (error, stackTrace) {
@@ -109,6 +130,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         filter: event.filter,
       ),
       filter: event.filter,
+      hasReachedMax: _sortedProducts.length <= _paginationLimit,
+      shouldReturnToTop: true,
     ));
   }
 
@@ -123,6 +146,28 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         filter: state.filter,
       ),
       query: event.query,
+      hasReachedMax: _sortedProducts.length <= _paginationLimit,
+      shouldReturnToTop: true,
+    ));
+  }
+
+  void _onProductsFetched(
+    ProductsFetched event,
+    Emitter<ProductsState> emit,
+  ) {
+    if (state.hasReachedMax) return;
+    final hasReachedMax =
+        state.products.length + _paginationLimit >= _sortedProducts.length;
+    emit(state.copyWith(
+      hasReachedMax: hasReachedMax,
+      shouldReturnToTop: false,
+      products: _sortedProducts
+          .getRange(
+              0,
+              hasReachedMax
+                  ? _sortedProducts.length
+                  : state.products.length + _paginationLimit)
+          .toList(),
     ));
   }
 
@@ -135,6 +180,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       (l) {
         emit(state.copyWith(
           status: ProductsStatus.failure,
+          shouldReturnToTop: true,
           failure: () => l,
         ));
         _appScaffoldMessager.showSnackbar(message: l.errorMessage);
@@ -142,6 +188,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       (r) {
         emit(state.copyWith(
           status: ProductsStatus.success,
+          shouldReturnToTop: false,
           failure: () => null,
         ));
         if (snackbarSuccessMessage != null) {
@@ -156,12 +203,20 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     required String query,
     required ProductsFilter filter,
   }) {
-    return _sorter.sortProducts(
+    _sortedProducts = _sorter.sortProducts(
       products: _querier.query(
         products,
         query,
       ),
       filter: filter,
     );
+    return _sortedProducts
+        .getRange(
+          0,
+          _sortedProducts.length < _paginationLimit
+              ? _sortedProducts.length
+              : _paginationLimit,
+        )
+        .toList();
   }
 }

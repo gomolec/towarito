@@ -54,3 +54,10 @@ class ProductsQueried extends ProductsEvent {
   @override
   List<Object> get props => [query];
 }
+
+class ProductsFetched extends ProductsEvent {
+  const ProductsFetched();
+
+  @override
+  List<Object?> get props => [];
+}
