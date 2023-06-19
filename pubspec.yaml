@@ -55,6 +55,7 @@ dependencies:
   csv: ^5.0.2
   stream_transform: ^2.1.0
   bloc_concurrency: ^0.2.2
+  safe_area_insets: ^0.1.2
 
 dev_dependencies:
   flutter_test:

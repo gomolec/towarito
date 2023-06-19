@@ -114,6 +114,9 @@ class _ScannerPageViewState extends State<ScannerPageView> {
             controller: _cameraController,
             fit: BoxFit.cover,
             onDetect: (barcode) {
+              if (barcode.barcodes.isEmpty) {
+                return;
+              }
               final value = barcode.barcodes.first.displayValue;
               if (value != null) {
                 context

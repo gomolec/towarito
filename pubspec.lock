@@ -680,6 +680,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  safe_area_insets:
+    dependency: "direct main"
+    description:
+      name: safe_area_insets
+      sha256: c48e1b938fa2abc4db4e51485f95eb6232f9abaf56d51fa6ffa89dfc2f53e338
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   shelf:
     dependency: transitive
     description:
