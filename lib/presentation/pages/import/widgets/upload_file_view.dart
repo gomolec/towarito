@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,75 +55,91 @@ class UploadFileView extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16.0),
-                      InkWell(
-                        onTap: () {
-                          context
-                              .read<ImportBloc>()
-                              .add(const ImportFileSelectStarted());
-                        },
-                        customBorder: const CircleBorder(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border:
-                                Border.all(color: theme.colorScheme.outline),
-                          ),
-                          padding: const EdgeInsets.all(48.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              () {
-                                if (state.fileUploadStatus ==
-                                    FileUploadStatus.initial) {
-                                  return Icon(
-                                    Icons.download_rounded,
-                                    color: theme.colorScheme.primary,
-                                    size: 72.0,
-                                  );
-                                }
-                                if (state.fileUploadStatus ==
-                                    FileUploadStatus.success) {
-                                  return Icon(
-                                    Icons.task_rounded,
-                                    color: theme.colorScheme.primary,
-                                    size: 72.0,
-                                  );
-                                }
-                                if (state.fileUploadStatus ==
-                                    FileUploadStatus.error) {
-                                  return Icon(
-                                    Icons.error,
-                                    color: theme.colorScheme.error,
-                                    size: 72.0,
-                                  );
-                                }
-                                if (state.fileUploadStatus ==
-                                    FileUploadStatus.initial) {
-                                  return Icon(
-                                    Icons.download_rounded,
-                                    color: theme.colorScheme.primary,
-                                    size: 72.0,
-                                  );
-                                }
-                                return const SizedBox.square(
-                                  dimension: 72.0,
-                                  child: CircularProgressIndicator(),
-                                );
-                              }(),
-                              Text(
-                                state.fileUploadStatus ==
-                                        FileUploadStatus.success
-                                    ? state.selectedFileName
-                                    : "Wybierz plik",
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
+                      kIsWeb
+                          ? TextField(
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: "Dane do zaimportowania",
+                                hintText: "Tutaj wklej zawartość tabeli html",
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                              ),
+                              maxLines: 5,
+                              onChanged: (value) => context
+                                  .read<ImportBloc>()
+                                  .add(ImportTextFieldChanded(text: value)),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                context
+                                    .read<ImportBloc>()
+                                    .add(const ImportFileSelectStarted());
+                              },
+                              customBorder: const CircleBorder(),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: theme.colorScheme.outline),
+                                ),
+                                padding: const EdgeInsets.all(48.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    () {
+                                      if (state.fileUploadStatus ==
+                                          FileUploadStatus.initial) {
+                                        return Icon(
+                                          Icons.download_rounded,
+                                          color: theme.colorScheme.primary,
+                                          size: 72.0,
+                                        );
+                                      }
+                                      if (state.fileUploadStatus ==
+                                          FileUploadStatus.success) {
+                                        return Icon(
+                                          Icons.task_rounded,
+                                          color: theme.colorScheme.primary,
+                                          size: 72.0,
+                                        );
+                                      }
+                                      if (state.fileUploadStatus ==
+                                          FileUploadStatus.error) {
+                                        return Icon(
+                                          Icons.error,
+                                          color: theme.colorScheme.error,
+                                          size: 72.0,
+                                        );
+                                      }
+                                      if (state.fileUploadStatus ==
+                                          FileUploadStatus.initial) {
+                                        return Icon(
+                                          Icons.download_rounded,
+                                          color: theme.colorScheme.primary,
+                                          size: 72.0,
+                                        );
+                                      }
+                                      return const SizedBox.square(
+                                        dimension: 72.0,
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }(),
+                                    Text(
+                                      state.fileUploadStatus ==
+                                              FileUploadStatus.success
+                                          ? state.selectedFileName
+                                          : "Wybierz plik",
+                                      style:
+                                          theme.textTheme.bodyMedium?.copyWith(
+                                        color:
+                                            theme.colorScheme.onSurfaceVariant,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(height: 8.0),
-                            ],
-                          ),
-                        ),
-                      )
+                            ),
                     ],
                   ),
                 ),

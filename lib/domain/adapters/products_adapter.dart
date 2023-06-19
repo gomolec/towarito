@@ -84,8 +84,9 @@ class ProductsAdapter {
     return productsResult;
   }
 
-  Future<Either<Failure, List<String>>> importFile({required File file}) =>
-      _productsRepository.importFile(file: file);
+  Future<Either<Failure, List<String>>> importFile(
+          {File? file, String? text}) =>
+      _productsRepository.importFile(file: file, text: text);
 
   Future<Either<Failure, ImportResults>> importProducts({
     required ImportedFileStructure structure,

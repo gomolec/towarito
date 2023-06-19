@@ -37,13 +37,13 @@ class UserInfoHeader extends StatelessWidget {
               height: 8.0,
             ),
             Text(
-              "Sebastian Gomolec",
+              "Użytkownik testowy",
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
             ),
             Text(
-              "Sklep magazyn",
+              "Wersja testowa",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),

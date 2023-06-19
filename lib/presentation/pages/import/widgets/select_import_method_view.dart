@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:towarito/presentation/pages/import/bloc/import_bloc.dart';
@@ -34,9 +35,10 @@ class SelectImportMethodView extends StatelessWidget {
               title: "Import z pliku CSV",
               subtitle:
                   "Importuje przy użyciu kreatora produkty z pliku o rozszerzeniu .csv, który można otrzymać eksportując arkusz kalkulacyjny.",
-              onTap: () => context
-                  .read<ImportBloc>()
-                  .add(const ImportMethodSelected(importType: ImportType.csv)),
+              onTap: kIsWeb
+                  ? null
+                  : () => context.read<ImportBloc>().add(
+                      const ImportMethodSelected(importType: ImportType.csv)),
               theme: theme,
             ),
             const SizedBox(height: 16.0),

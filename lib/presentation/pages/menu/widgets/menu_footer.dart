@@ -11,7 +11,7 @@ class MenuFooter extends StatelessWidget {
         bottom: 8.0,
       ),
       child: Text(
-        """Wersja 0.0.3\nCopyright © 2022 Sebastian Gomolec\ngomolecs@gmail.com\nAll rights reserved""",
+        """Wersja 0.3.5\nCopyright © 2023 Sebastian Gomolec\ngomolecs@gmail.com\nAll rights reserved""",
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,

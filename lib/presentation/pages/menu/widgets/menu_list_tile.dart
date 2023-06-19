@@ -29,14 +29,18 @@ class MenuListTile extends StatelessWidget {
                   Icon(
                     leadingIcon,
                     size: 24.0,
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: onTap == null
+                        ? Theme.of(context).colorScheme.onSurfaceVariant
+                        : Theme.of(context).colorScheme.onBackground,
                   ),
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: Text(
                       title,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: onTap == null
+                                ? Theme.of(context).colorScheme.onSurfaceVariant
+                                : Theme.of(context).colorScheme.onBackground,
                           ),
                     ),
                   ),

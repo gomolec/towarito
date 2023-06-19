@@ -26,12 +26,14 @@ class ImportBloc extends Bloc<ImportEvent, ImportState> {
     on<ImportFileSelectStarted>(_onFileSelectStarted);
     on<ImportFileUploadEnded>(_onFileUploadEnded);
     on<ImportFieldsMappingEnded>(_onFieldsMappingEnded);
+    on<ImportTextFieldChanded>(_onTextFieldChanded);
   }
 
   int maxImportProgress = 0;
   int progress = 0;
 
-  File? selectedFile;
+  File? importedFile;
+  String? importedText;
 
   void _onMethodSelected(
     ImportMethodSelected event,
@@ -86,8 +88,6 @@ class ImportBloc extends Bloc<ImportEvent, ImportState> {
     Emitter<ImportState> emit,
   ) async {
     if (state is! ImportFileUploading) {
-      //exit importing - critical error
-      log("bład krytyczny");
       return;
     }
     emit((state as ImportFileUploading).copyWith(
@@ -114,17 +114,47 @@ class ImportBloc extends Bloc<ImportEvent, ImportState> {
       if (result.files.isEmpty) {
         throw const ImportFileFailure("Nie wybrano pliku.");
       }
-      selectedFile = File(result.files.single.path!);
+      importedFile = File(result.files.single.path!);
       emit((state as ImportFileUploading).copyWith(
-        selectedFileName: selectedFile!.path.split(Platform.pathSeparator).last,
+        selectedFileName: importedFile!.path.split(Platform.pathSeparator).last,
         fileUploadStatus: FileUploadStatus.success,
         progress: ++progress / maxImportProgress,
       ));
     } catch (e) {
+      log(e.toString());
       emit((state as ImportFileUploading).copyWith(
         fileUploadStatus: FileUploadStatus.error,
       ));
     }
+  }
+
+  Future<void> _onTextFieldChanded(
+    ImportTextFieldChanded event,
+    Emitter<ImportState> emit,
+  ) async {
+    if (state is! ImportFileUploading) {
+      return;
+    }
+    if (event.text.isEmpty) {
+      if (importedText != null) {
+        progress--;
+      }
+      importedText = null;
+      emit((state as ImportFileUploading).copyWith(
+        fileUploadStatus: FileUploadStatus.initial,
+        progress: progress / maxImportProgress,
+      ));
+      return;
+    }
+    if (importedText == null) {
+      progress++;
+    }
+    importedText = event.text;
+    emit((state as ImportFileUploading).copyWith(
+      selectedFileName: "text",
+      fileUploadStatus: FileUploadStatus.success,
+      progress: progress / maxImportProgress,
+    ));
   }
 
   Future<void> _onFileUploadEnded(
@@ -136,10 +166,13 @@ class ImportBloc extends Bloc<ImportEvent, ImportState> {
     }
     emit(const ImportLoading());
 
-    if (selectedFile == null) {
+    if (importedFile == null && importedText == null) {
       return;
     }
-    final result = await _productsAdapter.importFile(file: selectedFile!);
+    final result = await _productsAdapter.importFile(
+      file: importedFile,
+      text: importedText,
+    );
     if (result.isLeft()) {
       emit(ImportSummary(errorText: result.asLeft().errorMessage));
       return;

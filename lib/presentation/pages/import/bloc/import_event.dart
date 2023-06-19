@@ -22,6 +22,15 @@ class ImportFileSelectStarted extends ImportEvent {
   const ImportFileSelectStarted();
 }
 
+class ImportTextFieldChanded extends ImportEvent {
+  final String text;
+
+  const ImportTextFieldChanded({required this.text});
+
+  @override
+  List<Object> get props => [text];
+}
+
 class ImportFileUploadEnded extends ImportEvent {
   const ImportFileUploadEnded();
 }

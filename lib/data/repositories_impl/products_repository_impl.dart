@@ -128,14 +128,15 @@ class ProductsRepositoryImpl implements ProductsRepository {
   }
 
   @override
-  Future<Either<Failure, List<String>>> importFile({required File file}) async {
+  Future<Either<Failure, List<String>>> importFile(
+      {File? file, String? text}) async {
     try {
-      final data = await _importService.importFile(file: file);
+      final data = await _importService.importFile(file: file, text: text);
       return Right(data);
     } on FileExtensionNotSupportedException {
       return const Left(ImportFileFailure('Niewspierane rozszerzenie pliku'));
     } on EmptyFileException {
-      return const Left(ImportFileFailure('Plik jest pusty'));
+      return const Left(ImportFileFailure('Dane są puste lub ich brak'));
     } catch (e) {
       return Left(ImportFileFailure(e.toString()));
     }

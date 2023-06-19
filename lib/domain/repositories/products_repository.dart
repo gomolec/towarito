@@ -21,7 +21,7 @@ abstract class ProductsRepository {
 
   Future<Either<Failure, Product>> deleteProduct({required String id});
 
-  Future<Either<Failure, List<String>>> importFile({required File file});
+  Future<Either<Failure, List<String>>> importFile({File? file, String? text});
 
   Future<Either<Failure, ImportResults>> importProducts(
       {required ImportedFileStructure structure});

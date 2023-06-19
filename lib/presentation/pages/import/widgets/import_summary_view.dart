@@ -105,8 +105,8 @@ class ImportSummaryView extends StatelessWidget {
             ImportBottomBar(
               buttonText: "Zakończ",
               progress: 1,
-              onTap: () => AutoRouter.of(context).pop(),
-            )
+              onTap: () => RouterScope.of(context).controller.popTop(),
+            ),
           ],
         );
       },

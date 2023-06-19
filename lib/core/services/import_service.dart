@@ -13,9 +13,21 @@ class ImportService {
   List<List<String>>? get cachedData => _cachedData;
 
   //return only headers of file to structurize data
-  Future<List<String>> importFile({required File file}) async {
-    final importedData = await file.readAsString();
-    final fileExtension = getFileExtension(file.path);
+  Future<List<String>> importFile({File? file, String? text}) async {
+    if (file == null && text == null) {
+      throw FileExtensionNotSupportedException();
+    }
+
+    late final String importedData;
+    late final String fileExtension;
+    if (file != null) {
+      importedData = await file.readAsString();
+      fileExtension = getFileExtension(file.path);
+    }
+    if (text != null) {
+      importedData = text;
+      fileExtension = 'txt';
+    }
 
     late final List<List<String>> data;
     switch (fileExtension) {

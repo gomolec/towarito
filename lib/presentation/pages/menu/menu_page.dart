@@ -28,10 +28,9 @@ class MenuPageView extends StatelessWidget {
           children: [
             const UserInfoHeader(),
             const SizedBox(height: 4.0),
-            MenuListTile(
+            const MenuListTile(
               leadingIcon: Icons.person,
               title: "Profil użytkownika",
-              onTap: () {},
             ),
             MenuListTile(
               leadingIcon: Icons.timer_outlined,
@@ -47,25 +46,21 @@ class MenuPageView extends StatelessWidget {
                 AutoRouter.of(context).root.navigate(const ImportRoute());
               },
             ),
-            MenuListTile(
+            const MenuListTile(
               leadingIcon: Icons.file_upload_outlined,
               title: "Eksport",
-              onTap: () {},
             ),
-            MenuListTile(
+            const MenuListTile(
               leadingIcon: Icons.help_outline_rounded,
               title: "Pomoc",
-              onTap: () {},
             ),
-            MenuListTile(
+            const MenuListTile(
               leadingIcon: Icons.settings_rounded,
               title: "Ustawienia",
-              onTap: () {},
             ),
-            MenuListTile(
+            const MenuListTile(
               leadingIcon: Icons.exit_to_app_rounded,
               title: "Wyczyść dane",
-              onTap: () {},
             ),
             const MenuFooter(),
           ],
