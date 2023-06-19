@@ -15,3 +15,5 @@ class ImportProductsException implements Exception {}
 class FileExtensionNotSupportedException implements Exception {}
 
 class EmptyFileException implements Exception {}
+
+class ConnectionException implements Exception {}

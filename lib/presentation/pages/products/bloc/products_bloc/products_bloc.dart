@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:towarito/core/extensions/either_extension.dart';
+import 'package:towarito/core/services/connection_service.dart';
 
 import '../../../../../core/app/app_scaffold_messager.dart';
 import '../../../../../core/error/failures.dart';
@@ -18,6 +22,7 @@ part 'products_state.dart';
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   final ProductsAdapter _productsAdapter;
   final AppScaffoldMessager _appScaffoldMessager;
+  final ConnectionService _connectionService;
   final ProductsQuerier _querier = const ProductsQuerier();
   final ProductsSorter _sorter = const ProductsSorter();
 
@@ -30,8 +35,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   ProductsBloc({
     required ProductsAdapter productsAdapter,
     required AppScaffoldMessager appScaffoldMessager,
+    required ConnectionService connectionService,
   })  : _productsAdapter = productsAdapter,
         _appScaffoldMessager = appScaffoldMessager,
+        _connectionService = connectionService,
         super(const ProductsState()) {
     on<ProductsSubscriptionRequested>(_onSubscriptionRequested);
     on<ProductDeleted>(_onProductDeleted);
@@ -55,6 +62,17 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     Emitter<ProductsState> emit,
   ) async {
     emit(state.copyWith(status: ProductsStatus.loading));
+    _connectionService.observeConnectionStatus().listen((hasConnection) async {
+      log(hasConnection.toString());
+      if (hasConnection) {
+        final result = await _productsAdapter.updateProductsRemoteData();
+        log(result.toString());
+        if (result.isLeft()) {
+          _appScaffoldMessager.showSnackbar(
+              message: result.asLeft().errorMessage);
+        }
+      }
+    });
     await emit.onEach<ProductsEntity>(
       _productsAdapter.observeProductsData(),
       onData: (data) {

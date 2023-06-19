@@ -134,6 +134,14 @@ class UpdateProductFailure extends Failure {
       "Wystąpił błąd podczas modyfikowania produktu. $text";
 }
 
+class DownloadProductsRemoteDataFailure extends Failure {
+  const DownloadProductsRemoteDataFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Wystąpił błąd podczas pobierania zdalnych danych produktu. $text";
+}
+
 class ProductNotFoundFailure extends Failure {
   const ProductNotFoundFailure(super.text);
 
@@ -203,16 +211,18 @@ class ImportProductsFailure extends Failure {
       "Wystąpił błąd podczas importowania produktów. $text";
 }
 
-// class FileExtensionNotSupportedFailure extends Failure {
-//   const FileExtensionNotSupportedFailure(super.text);
+class NoCurrentSessionFailure extends Failure {
+  const NoCurrentSessionFailure(super.text);
 
-//   @override
-//   String get errorMessage =>
-//       "Plik o tym rozszerzeniu nie jest wspierany. $text";
-// }
-// class EmptyFileFailure extends Failure {
-//   const EmptyFileFailure(super.text);
+  @override
+  String get errorMessage =>
+      "Brak aktualnej sesji, nie można kontynuować. $text";
+}
 
-//   @override
-//   String get errorMessage => "Plik nie zawiera żadnych informacji. $text";
-// }
+class RemoteDataDisabledFailure extends Failure {
+  const RemoteDataDisabledFailure(super.text);
+
+  @override
+  String get errorMessage =>
+      "Pobieranie zdalnych danych produktów wyłączone. $text";
+}

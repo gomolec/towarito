@@ -13,12 +13,15 @@ import '../repositories/repositories.dart';
 class ProductsAdapter {
   final ProductsRepository _productsRepository;
   final HistoryRepository _historyRepository;
+  final SessionsRepository _sessionsRepository;
 
   const ProductsAdapter({
     required ProductsRepository productsRepository,
     required HistoryRepository historyRepository,
+    required SessionsRepository sessionsRepository,
   })  : _productsRepository = productsRepository,
-        _historyRepository = historyRepository;
+        _historyRepository = historyRepository,
+        _sessionsRepository = sessionsRepository;
 
   Future<Either<Failure, Product>> createProduct(
       {required Product product}) async {
@@ -82,6 +85,40 @@ class ProductsAdapter {
       return Left(historyResult.asLeft());
     }
     return productsResult;
+  }
+
+  Future<Either<Failure, None>> updateProductsRemoteData() async {
+    final canDownloadRemoteData = await _canDownloadRemoteData();
+    if (canDownloadRemoteData.isLeft()) {
+      return Left(canDownloadRemoteData.asLeft());
+    }
+    final result = await _productsRepository.updateProductsRemoteData();
+    return result;
+  }
+
+  Future<Either<Failure, Product>> updateProductRemoteData(
+      {required Product product}) async {
+    final canDownloadRemoteData = await _canDownloadRemoteData();
+    if (canDownloadRemoteData.isLeft()) {
+      return Left(canDownloadRemoteData.asLeft());
+    }
+    final result =
+        await _productsRepository.updateProductRemoteData(product: product);
+    return result;
+  }
+
+  Future<Either<Failure, Session>> _canDownloadRemoteData() async {
+    final currentSession = await _sessionsRepository.getCurrentSession();
+    if (currentSession.isLeft()) {
+      return Left(currentSession.asLeft());
+    }
+    if (currentSession.asRight() == null) {
+      return const Left(NoCurrentSessionFailure(''));
+    }
+    if (currentSession.asRight()!.useRemoteData == false) {
+      return const Left(RemoteDataDisabledFailure(''));
+    }
+    return Right(currentSession.asRight()!);
   }
 
   Future<Either<Failure, List<String>>> importFile({required File file}) =>

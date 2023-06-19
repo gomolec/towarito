@@ -29,4 +29,9 @@ abstract class ProductsRepository {
   Future<Either<Failure, None>> openSession({required String id});
 
   Future<Either<Failure, None>> closeSession();
+
+  Future<Either<Failure, Product>> updateProductRemoteData(
+      {required Product product});
+
+  Future<Either<Failure, None>> updateProductsRemoteData();
 }

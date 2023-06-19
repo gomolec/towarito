@@ -1,7 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:towarito/core/navigation/app_router.dart';
+import 'package:towarito/core/services/connection_service.dart';
 import 'package:towarito/core/services/import_service.dart';
+import 'package:towarito/data/datasources/products_remote_datasource.dart';
 
 import 'core/app/app_scaffold_messager.dart';
 import 'core/constants/constants.dart';
@@ -21,6 +24,10 @@ import 'domain/repositories/repositories.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  sl.registerLazySingleton<Connectivity>(
+    () => Connectivity(),
+  );
+
   //! Utilities
   sl.registerLazySingleton<ProductsQuerier>(
     () => const ProductsQuerier(),
@@ -32,6 +39,12 @@ Future<void> init() async {
   //! Services
   sl.registerLazySingleton<ImportService>(
     () => ImportService(),
+  );
+
+  sl.registerLazySingleton<ConnectionService>(
+    () => ConnectionService(
+      connectivity: sl<Connectivity>(),
+    ),
   );
 
   //! App
@@ -49,6 +62,7 @@ Future<void> init() async {
     () => ProductsAdapter(
       productsRepository: sl<ProductsRepository>(),
       historyRepository: sl<HistoryRepository>(),
+      sessionsRepository: sl<SessionsRepository>(),
     ),
   );
 
@@ -70,7 +84,8 @@ Future<void> init() async {
   //! Respositories
   sl.registerLazySingleton<ProductsRepository>(
     () => ProductsRepositoryImpl(
-      source: sl<ProductsLocalDatasource>(),
+      localSource: sl<ProductsLocalDatasource>(),
+      remoteSource: sl<ProductsRemoteDatasource>(),
       importService: sl<ImportService>(),
     ),
   );
@@ -103,5 +118,9 @@ Future<void> init() async {
     () => HistoryLocalDatasourceImpl(
       datasource: Hive,
     ),
+  );
+
+  sl.registerLazySingleton<ProductsRemoteDatasource>(
+    () => ProductsRemoteDatasourceImpl(),
   );
 }

@@ -63,20 +63,29 @@ class ProductTile extends StatelessWidget {
                       .onWarningContainer!;
                 }
               }
+              bool hasImage = product.imageUrl != null;
               return Container(
-                alignment: Alignment.center,
+                alignment: hasImage ? Alignment.topRight : Alignment.center,
                 height: 56.0,
                 width: 56.0,
                 decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(8.0),
-                  ),
-                ),
+                    color: hasImage ? null : color,
+                    image: hasImage
+                        ? DecorationImage(
+                            image: Image.network(product.imageUrl!).image,
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8.0),
+                    ),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outline,
+                    )),
                 child: Icon(
                   iconData,
                   color: iconColor,
-                  size: 24.0,
+                  size: hasImage ? 8.0 : 24.0,
                 ),
               );
             }(),

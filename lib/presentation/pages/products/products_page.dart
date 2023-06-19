@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:towarito/core/services/connection_service.dart';
 
 import '../../../core/app/app_scaffold_messager.dart';
 import '../../../core/navigation/app_router.dart';
@@ -20,6 +21,7 @@ class ProductsPage extends StatelessWidget {
       create: (context) => ProductsBloc(
         productsAdapter: sl<ProductsAdapter>(),
         appScaffoldMessager: sl<AppScaffoldMessager>(),
+        connectionService: sl<ConnectionService>(),
       )..add(const ProductsSubscriptionRequested()),
       child: const ProductsPageView(),
     );
